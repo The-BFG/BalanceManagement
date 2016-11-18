@@ -1,7 +1,7 @@
-public static void Main(String args[])
+public class BudgetManagement
 {
-    public Main()
-    {
-        
-    }
+	public static void main(String[] args)
+	{
+        System.out.println("Dio Lercio");
+	}
 }
