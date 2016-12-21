@@ -3,16 +3,12 @@
  * per creare un oggetto riga da inserire nella tabella.
  * @author Giacomo Guerzoni
  */
+import java.util.Date;
 
-import java.util.GregorianCalendar;
+public class BMItem{
+    Date d;
 
-public class BudgetItem{
-    private GregorianCalendar date;
-    
-    public BudgetItem(){
-        this.date = new GregorianCalendar();
-    }
-    public BudgetItem(GregorianCalendar date){
-        this.date = date;
+    public BMItem() {
+        this.d = new GregorianCalendar(10,10,10);
     }
 }
