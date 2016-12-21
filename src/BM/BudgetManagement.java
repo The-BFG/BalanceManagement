@@ -1,8 +1,8 @@
+package BM;
+
 //import java.awt.*;
 import javax.swing.*;
 import javax.swing.JTable;
-import BM.BMTableModel;
-//import javax.swing.JFrame;
 
 public class BudgetManagement {
     public static void main(String[] args) {
