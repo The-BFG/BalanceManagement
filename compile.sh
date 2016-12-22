@@ -1,1 +1,1 @@
-javac -d class/ src/BM/BudgetManagement.java -sourcepath src
+javac -d class/ -cp lib/ src/BM/BudgetManagement.java -sourcepath src

@@ -16,12 +16,12 @@ public class BMTableModel extends AbstractTableModel implements java.io.Serializ
     }
     
     BMTableModel(ArrayList<BMItem> transactions) {
-        this.transactions = transactions;
+        this.transactions = transactions;//new ArrayList<>(transactions);
         editable = new ArrayList<boolean[]>();
         boolean[] element = {false, false, false};
         
         for(int i=0;i<this.transactions.size();i++) {
-            editable.set(i, element);
+            editable.add(element);
         }        
     }
 
@@ -41,8 +41,7 @@ public class BMTableModel extends AbstractTableModel implements java.io.Serializ
     public Object getValueAt(int row, int col) {
         BMItem item = transactions.get(row);
         switch (col) {
-            case 0: 
-                return item.getDate().toString();
+            case 0: return BMItem.dateFormat.format(item.getDate().getTime());
             case 1: return item.getDescription(); 
             case 2: return item.getAmount(); 
             default: return ""; 
