@@ -1,12 +1,17 @@
 package BM;
 
 import java.awt.GridLayout;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Properties;
 import javax.swing.*;
 import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import org.jdatepicker.impl.*;
+import org.jdatepicker.util.*;
+import org.jdatepicker.*;
 
 public class BudgetManagement {
     public static void main(String[] args) {
@@ -14,14 +19,24 @@ public class BudgetManagement {
         mainFrame.setLocation(100, 20);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        //periodPanel
         JLabel periodLbl = new JLabel("Choose the transactions period you want to see:");
         JLabel fromLbl = new JLabel("From:");
         JLabel toLbl = new JLabel("To:");
         UtilDateModel model = new UtilDateModel();
-        JDatePanelImpl datePanel = new JDatePanelImpl(model);
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel);
+        model.setDay((new GregorianCalendar().get(Calendar.DAY_OF_MONTH)));
+        model.setMonth((new GregorianCalendar().get(Calendar.MONTH)));
+        model.setYear((new GregorianCalendar().get(Calendar.YEAR)));
+        Properties p = new Properties();
+        p.put("text.today","Today");
+        p.put("text.month","Month");
+        p.put("text.year","Year");
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+        JDatePickerImpl datePicker;
+        datePicker = new JDatePickerImpl(datePanel, dateFormatter);
         frame.add(datePicker);
         
+        //tablePanel
         ArrayList<BMItem> list = new ArrayList<>();
         BMItem trans1 = new BMItem(new GregorianCalendar(), "Prova1", 100.1);
         BMItem trans2 = new BMItem(new GregorianCalendar(), "Prova2", 20.1);
