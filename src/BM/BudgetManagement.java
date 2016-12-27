@@ -33,8 +33,8 @@ public class BudgetManagement {
         p.put("text.year","Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         JDatePickerImpl datePicker;
-        datePicker = new JDatePickerImpl(datePanel, dateFormatter);
-        frame.add(datePicker);
+        datePicker = new JDatePickerImpl(datePanel, new BMDateFormatter());
+        
         
         //tablePanel
         ArrayList<BMItem> list = new ArrayList<>();
@@ -56,7 +56,7 @@ public class BudgetManagement {
         mainPanel.add(scrollPane);
         
         GridLayout mainLayout = new GridLayout(3,1);
-        mainLayout.addLayoutComponent("", new JLabel("dio"));
+        mainLayout.addLayoutComponent("", periodLayout);
         mainLayout.addLayoutComponent("", mainPanel);
         mainFrame.setLayout(mainLayout);
         mainFrame.pack();
