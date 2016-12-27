@@ -84,4 +84,10 @@ public class BMTableModel extends AbstractTableModel implements java.io.Serializ
         }
         fireTableDataChanged();
     }
+    
+    public void addItem(BMItem item){
+        transactions.add(item);
+        boolean[] element = {false, false, false};
+        editable.add(element);
+    }
 }
