@@ -14,6 +14,9 @@ public class BMPeriodPanel extends JPanel {
     private final JLabel fromLbl = new JLabel("From:");
     private final JLabel toLbl = new JLabel("To:");
     private final UtilDateModel model;
+    private final Properties p;
+    private JDatePanelImpl datePanel;
+    private JDatePickerImpl datePicker;
     
     public BMPeriodPanel() {
         
@@ -21,12 +24,11 @@ public class BMPeriodPanel extends JPanel {
         model.setDay((new GregorianCalendar().get(Calendar.DAY_OF_MONTH)));
         model.setMonth((new GregorianCalendar().get(Calendar.MONTH)));
         model.setYear((new GregorianCalendar().get(Calendar.YEAR)));
-        Properties p = new Properties();
+        p = new Properties();
         p.put("text.today", "Today");
         p.put("text.month", "Month");
         p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        JDatePickerImpl datePicker;
+        datePanel = new JDatePanelImpl(model, p);
         datePicker = new JDatePickerImpl(datePanel, new BMDateFormatter());
         
         add(periodLbl);
