@@ -1,6 +1,6 @@
 package BM;
 
-import java.awt.GridLayout;
+import java.awt.GridBagLayout;
 import javax.swing.*;
 
 public class BudgetManagement {
@@ -12,14 +12,12 @@ public class BudgetManagement {
         BMPeriodPanel period = new BMPeriodPanel();
         BMTablePanel table = new BMTablePanel();
         
-        //JPanel mainPanel = new JPanel();//(JPanel) mainFrame.getContentPane();//come se fosse un puntatore al panel predefinito del JFrame
+        JPanel mainPanel = (JPanel) mainFrame.getContentPane();//come se fosse un puntatore al panel predefinito del JFrame
         
-        //GridLayout mainLayout = new GridLayout(2,1);
-        //mainLayout.addLayoutComponent("period", period);
-        //mainLayout.addLayoutComponent("table", table);
-        //mainPanel.setLayout(mainLayout);
-        mainFrame.add(period);
-        mainFrame.add(table);
+        BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
+        mainPanel.setLayout(mainLayout);        
+        mainPanel.add(period);
+        mainPanel.add(table);
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
