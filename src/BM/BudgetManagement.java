@@ -14,8 +14,7 @@ public class BudgetManagement {
         BMTablePanel table = new BMTablePanel();
         BMAddTransactionPanel addTransaction = new BMAddTransactionPanel();
         
-        JPanel mainPanel = (JPanel) mainFrame.getContentPane();
-        
+        JPanel mainPanel = (JPanel) mainFrame.getContentPane();        
         BorderLayout mainLayout = new BorderLayout();
         mainPanel.setLayout(mainLayout);        
         mainPanel.add(period, BorderLayout.NORTH);
