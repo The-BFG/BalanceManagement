@@ -11,6 +11,7 @@ import java.util.GregorianCalendar;
 import java.util.Properties;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -53,6 +54,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         insertDatePicker.setMaximumSize(new Dimension(150,15));
         insertDatePicker.setLocation(insertDatePicker.getLocation().x,(insertDatePicker.getLocation().y-100));
         descTxt = new JTextField("Transaction description",50);
+        //descTxt.setPreferredSize(new Dimension(300, 25));
         amountTxt = new JTextField("Amount",10);
         
          insertXDP = new JXDatePicker();
@@ -84,7 +86,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
                 Integer.parseInt(amountTxt.getText());
             }
             catch (NumberFormatException numberException){
-                System.out.println("Insert a number");
+                JOptionPane.showMessageDialog(this, "You have to insert a number in the amount field.", "Insertion warning", JOptionPane.WARNING_MESSAGE);
             }
             
         }
