@@ -5,14 +5,14 @@ import java.awt.Dimension;
 import javax.swing.*;
 
 public class BudgetManagement {
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         JFrame mainFrame = new JFrame("Budget Management");
         mainFrame.setLocation(100, 20);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         BMPeriodPanel period = new BMPeriodPanel();
         BMTablePanel table = new BMTablePanel();
-        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel();
+        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel(table.getTable());
         
         JPanel mainPanel = (JPanel) mainFrame.getContentPane();        
         BorderLayout mainLayout = new BorderLayout();
