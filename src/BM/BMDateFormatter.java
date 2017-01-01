@@ -24,5 +24,4 @@ public class BMDateFormatter extends AbstractFormatter {
 
         return "";
     }
-
 }

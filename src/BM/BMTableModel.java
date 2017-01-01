@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BMTableModel extends AbstractTableModel implements java.io.Serializable{
     private ArrayList<BMItem> transactions = null;
-    private final String[] colName = {"Date","Description","Amount","Remove","Modify"};
+    private final String[] colName = {"Date","Description","Amount","Edit"};
     private List<boolean[]> editable;
     
     BMTableModel() {

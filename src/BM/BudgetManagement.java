@@ -1,5 +1,7 @@
 package BM;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.swing.*;
 
 public class BudgetManagement {
@@ -10,13 +12,18 @@ public class BudgetManagement {
         
         BMPeriodPanel period = new BMPeriodPanel();
         BMTablePanel table = new BMTablePanel();
+        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel();
         
-        JPanel mainPanel = (JPanel) mainFrame.getContentPane();//come se fosse un puntatore al panel predefinito del JFrame
+        JPanel mainPanel = (JPanel) mainFrame.getContentPane();
         
-        BoxLayout mainLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
+        BorderLayout mainLayout = new BorderLayout();
         mainPanel.setLayout(mainLayout);        
-        mainPanel.add(period);
-        mainPanel.add(table);
+        mainPanel.add(period, BorderLayout.NORTH);
+        mainPanel.add(Box.createRigidArea(new Dimension(5,0)), BorderLayout.LINE_START);
+        mainPanel.add(table, BorderLayout.CENTER);
+        mainPanel.add(Box.createRigidArea(new Dimension(5,0)), BorderLayout.LINE_END);
+        mainPanel.add(addTransaction, BorderLayout.SOUTH);
+
         mainFrame.pack();
         mainFrame.setVisible(true);
     }
