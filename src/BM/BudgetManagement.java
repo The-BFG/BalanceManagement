@@ -12,7 +12,7 @@ public class BudgetManagement {
         
         BMPeriodPanel period = new BMPeriodPanel();
         BMTablePanel table = new BMTablePanel();
-        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel(table.getTable());
+        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel((BMTableModel)table.getTable().getModel());
         
         JPanel mainPanel = (JPanel) mainFrame.getContentPane();        
         BorderLayout mainLayout = new BorderLayout();

@@ -29,10 +29,10 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
     private final JTextField descTxt, amountTxt;
     private final JXDatePicker insertXDP;
     
-    private JTable table;
+    private BMTableModel tableModel;
 
-    public BMAddTransactionPanel(JTable table) {
-        this.table = table;
+    public BMAddTransactionPanel(BMTableModel tableModel) {
+        this.tableModel = tableModel;
         
         topLayout = new FlowLayout(FlowLayout.LEFT);
         topPanel = new JPanel();
@@ -71,15 +71,17 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         if( !descTxt.getText().equals("") && !amountTxt.getText().equals("") && !(insertXDP.getDate() == null)) {
             Double amount;
             try {
-                Double.parseDouble(amountTxt.getText());
+                amount = Double.parseDouble(amountTxt.getText());
+                GregorianCalendar calendar = new GregorianCalendar();
+                calendar.set(ERROR, WIDTH, WIDTH);
+                insertXDP.getDate().getTime();
+                BMItem item = new BMItem(calendar, descTxt.getText(), amount);
+                tableModel.addItem(item);
             }
             catch (NumberFormatException numberException){
                 JOptionPane.showMessageDialog(this, "You have to insert a number in the amount field.", "Insertion warning", JOptionPane.WARNING_MESSAGE);
             }
-            GregorianCalendar calendar = new GregorianCalendar();
-            calendar.set(ERROR, WIDTH, WIDTH);
-            insertXDP.getDate().getTime();
-            BMItem item = new BMItem(calendar, descTxt.getText(), amount);
+            
         }
     }
 }

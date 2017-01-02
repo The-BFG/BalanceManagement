@@ -22,9 +22,9 @@ public class BMPeriodPanel extends JPanel {
     private final Properties p;
     private JDatePanelImpl fromDatePanel,toDatePanel;
     private JDatePickerImpl fromDatePicker, toDatePicker;
-    private BoxLayout panelLayout;
-    private FlowLayout topLayout, midiLayout;
-    private JPanel topPanel,midiPanel;
+    private final BoxLayout panelLayout;
+    private final FlowLayout topLayout, midiLayout;
+    private final JPanel topPanel,midiPanel;
     
     public BMPeriodPanel() {
         fromModel = new UtilDateModel();

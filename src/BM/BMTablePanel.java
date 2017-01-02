@@ -16,6 +16,7 @@ public class BMTablePanel extends JScrollPane {
         BMItem trans2 = new BMItem(new GregorianCalendar(), "Prova2", 20.1);
 
         tableModel = new BMTableModel();
+        tableModel.fireTableDataChanged();
         tableModel.addItem(trans1);
         tableModel.addItem(trans2);
         table = new JTable(tableModel);
