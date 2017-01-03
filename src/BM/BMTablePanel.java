@@ -5,7 +5,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class BMTablePanel extends JScrollPane {
-    //private ArrayList<BMItem> list = new ArrayList<>();
     private BMTableModel tableModel; 
     private JTable table;
     

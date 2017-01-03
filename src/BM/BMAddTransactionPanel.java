@@ -5,7 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.Box;
@@ -14,8 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMAddTransactionPanel extends JPanel implements ActionListener {
@@ -26,7 +25,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
     private final JPanel topPanel, centerPanel;
     
     private final JButton addBtn;
-    private final JTextField descTxt, amountTxt;
+    private final BMTextField descTxt, amountTxt;
     private final JXDatePicker insertXDP;
     
     private BMTableModel tableModel;
@@ -41,14 +40,13 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         
         insertXDP = new JXDatePicker();
         insertXDP.setDate(Calendar.getInstance().getTime());
-        insertXDP.setFormats(new SimpleDateFormat("dd.MM.yyyy"));
+        insertXDP.setFormats(BMItem.dateFormat);
         
-        descTxt = new JTextField("Transaction description",50);
-        //descTxt.setPreferredSize(new Dimension(300, 25));
-        amountTxt = new JTextField("Amount",10);
+        descTxt = new BMTextField("Transaction description",50);
+        amountTxt = new BMTextField("Amount",10);
         
         centerPanel = new JPanel();
-         centerLayout = new BoxLayout(centerPanel, BoxLayout.X_AXIS);
+        centerLayout = new BoxLayout(centerPanel, BoxLayout.X_AXIS);
         centerPanel.setLayout(centerLayout);
         centerPanel.add(insertXDP);
         centerPanel.add(descTxt);
@@ -73,16 +71,24 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
             try {
                 amount = Double.parseDouble(amountTxt.getText());
                 GregorianCalendar calendar = new GregorianCalendar();
-                calendar.set(ERROR, WIDTH, WIDTH);
-                insertXDP.getDate().getTime();
+                String date = BMItem.dateFormat.format(insertXDP.getDate());
+                calendar.set( Integer.parseInt(date.substring(6, 10)), (Integer.parseInt(date.substring(3, 5)) - 1), Integer.parseInt(date.substring(0, 2)));
+                //calendar.set(2045,11,1);
+                
                 BMItem item = new BMItem(calendar, descTxt.getText(), amount);
                 tableModel.addItem(item);
-                tableModel.fireTableDataChanged();
+                
+                descTxt.setText("Transaction description");
+                amountTxt.setText("Amount");
+                /*for(int i=0; i<tableModel.getRowCount();i++) {
+                    for(int j=0; j<tableModel.getColumnCount();j++) {
+                        System.out.println(String.valueOf(i) + tableModel.getValueAt(i, j).toString());
+                    }
+                }*/
             }
             catch (NumberFormatException numberException){
                 JOptionPane.showMessageDialog(this, "You have to insert a number in the amount field.", "Insertion warning", JOptionPane.WARNING_MESSAGE);
-            }
-            
+            }            
         }
     }
 }

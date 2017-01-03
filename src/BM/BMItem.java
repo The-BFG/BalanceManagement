@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 public class BMItem{
-    static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private GregorianCalendar date;
     private String description;
     private Double amount;

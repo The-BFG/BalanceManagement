@@ -14,17 +14,38 @@ import javax.swing.JTextField;
  * @author giacomo
  */
 public class BMTextField extends JTextField implements FocusListener  {
+    private String firstTxt;
+    
     public BMTextField (){
+        super();
+        firstTxt = "";
+        addFocusListener(this);
+    }
+    public BMTextField (String text){
+        super(text);
+         firstTxt = text;
+        addFocusListener(this);
+    }
+    public BMTextField (int nChar){
+        super(nChar);
+        firstTxt = "";
+        addFocusListener(this);
+    }
+    public BMTextField (String text, int nChar){
+        super(text, nChar);
+        firstTxt = text;
         addFocusListener(this);
     }
 
     @Override
-    public void focusGained(FocusEvent event) {
-        
+    public void focusGained(FocusEvent e) {
+        setText(""); // Empty the text field when it receives focus
     }
-
     @Override
-    public void focusLost(FocusEvent event) {
-
-    }
+    public void focusLost(FocusEvent e) {
+        
+        if(getText().equals("")) {
+            setText(firstTxt);
+        }
+    }    
 }
