@@ -77,6 +77,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
                 insertXDP.getDate().getTime();
                 BMItem item = new BMItem(calendar, descTxt.getText(), amount);
                 tableModel.addItem(item);
+                tableModel.fireTableDataChanged();
             }
             catch (NumberFormatException numberException){
                 JOptionPane.showMessageDialog(this, "You have to insert a number in the amount field.", "Insertion warning", JOptionPane.WARNING_MESSAGE);
