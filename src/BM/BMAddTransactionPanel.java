@@ -5,8 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.Box;
@@ -18,7 +16,7 @@ import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMAddTransactionPanel extends JPanel implements ActionListener {
-    private final JLabel addLbl = new JLabel("Insert details of a new transaction:");
+    private final JLabel addLbl = new JLabel("Inserisci i dettagli della nuova transazione da aggiungere al biblancio:");
     private final BorderLayout panelLayout;
     private final BoxLayout centerLayout;
     private final FlowLayout topLayout;
@@ -52,7 +50,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         centerPanel.add(descTxt);
         centerPanel.add(amountTxt);
         
-        addBtn = new JButton("Add Transaction");
+        addBtn = new JButton("Aggiungi transazione");
         addBtn.addActionListener(this);
         
         panelLayout = new BorderLayout();
