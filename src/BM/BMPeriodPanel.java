@@ -4,7 +4,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -12,6 +15,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMPeriodPanel extends JPanel implements ActionListener {
@@ -24,9 +29,11 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private final BoxLayout panelLayout;
     private final FlowLayout topLayout, midiLayout;
     private final JPanel topPanel,midiPanel;
+    private final BMTablePanel tablePanel;
     
-    public BMPeriodPanel() {
+    public BMPeriodPanel(BMTablePanel tablePanel) {
         //toModel.setYear((new GregorianCalendar().get(Calendar.YEAR)));
+        this.tablePanel = tablePanel;
         day = new JRadioButton("Giorno");
         month = new JRadioButton("Mese");
         year = new JRadioButton("Anno");
@@ -72,9 +79,13 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>(2);
+        RowFilter rf;
+        Date startDate = null, endDate = null ;
         switch(e.getActionCommand()) {
             case "giorno":
-                
+                startDate = Calendar.getInstance().getTime();
+                endDate = Calendar.getInstance().getTime();
                 break;
             case "mese":
                 break;
@@ -83,7 +94,19 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
             case "Aggiungi transazione":
                 break;
             default:
-                break;
+                startDate = Calendar.getInstance().getTime();
+                endDate = Calendar.getInstance().getTime();
+        }
+        try {            
+            filters.add( RowFilter.dateFilter(ComparisonType.AFTER, startDate) );
+            filters.add( RowFilter.dateFilter(ComparisonType.BEFORE, endDate) );
+            rf = RowFilter.andFilter(filters);
+            tablePanel.setPeriodFilter(rf);
+            System.out.println("sono nel try dio lepre" + Calendar.getInstance().getTime().toString());
+        }
+        catch (NullPointerException nullPointer) {
+            tablePanel.setPeriodFilter(null);
+            System.out.println("sono nel catch dio nigga");
         }
     }
 }

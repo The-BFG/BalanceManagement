@@ -3,12 +3,13 @@ package BM;
 import java.util.GregorianCalendar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowFilter;
 import javax.swing.table.TableRowSorter;
 
 public class BMTablePanel extends JScrollPane {
     private BMTableModel tableModel; 
     private JTable table;
-    private TableRowSorter tableSorter;
+    private TableRowSorter<BMTableModel> tableSorter;
     
     public BMTablePanel() {
         
@@ -32,5 +33,8 @@ public class BMTablePanel extends JScrollPane {
     
     public JTable getTable() {
         return table;
+    }
+    public void setPeriodFilter(RowFilter rf) {
+        tableSorter.setRowFilter(rf);
     }
 }

@@ -10,8 +10,8 @@ public class BudgetManagement {
         mainFrame.setLocation(100, 20);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        BMPeriodPanel period = new BMPeriodPanel();
         BMTablePanel table = new BMTablePanel();
+        BMPeriodPanel period = new BMPeriodPanel(table);
         BMAddTransactionPanel addTransaction = new BMAddTransactionPanel((BMTableModel)table.getTable().getModel());
         
         JPanel mainPanel = (JPanel) mainFrame.getContentPane();        
