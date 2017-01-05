@@ -2,7 +2,6 @@ package BM;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Calendar;
@@ -16,10 +15,9 @@ import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMAddTransactionPanel extends JPanel implements ActionListener {
-    private final JLabel addLbl = new JLabel("Inserisci i dettagli della nuova transazione da aggiungere al biblancio:");
+    private final JLabel addLbl = new JLabel("  Inserisci i dettagli della nuova transazione da aggiungere al bilancio:");
     private final BorderLayout panelLayout;
-    private final BoxLayout centerLayout;
-    private final FlowLayout topLayout;
+    private final BoxLayout centerLayout, topLayout;
     private final JPanel topPanel, centerPanel;
     
     private final JButton addBtn;
@@ -31,21 +29,24 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
     public BMAddTransactionPanel(BMTableModel tableModel) {
         this.tableModel = tableModel;
         
-        topLayout = new FlowLayout(FlowLayout.LEFT);
         topPanel = new JPanel();
+        topLayout = new BoxLayout(topPanel, BoxLayout.Y_AXIS);
         topPanel.setLayout(topLayout);
+        topPanel.add(Box.createRigidArea(new Dimension(0,5)));
         topPanel.add(addLbl);
-        
+        topPanel.add(Box.createRigidArea(new Dimension(0,5)));
+
         insertXDP = new JXDatePicker();
         insertXDP.setDate(Calendar.getInstance().getTime());
         insertXDP.setFormats(BMItem.dateFormat);
         
-        descTxt = new BMTextField("Transaction description",50);
-        amountTxt = new BMTextField("Amount",10);
+        descTxt = new BMTextField("Descrizione della transazione effettuata",50);
+        amountTxt = new BMTextField("Ammontare",10);
         
         centerPanel = new JPanel();
         centerLayout = new BoxLayout(centerPanel, BoxLayout.X_AXIS);
         centerPanel.setLayout(centerLayout);
+        centerPanel.add(Box.createRigidArea(new Dimension(7,0)));
         centerPanel.add(insertXDP);
         centerPanel.add(descTxt);
         centerPanel.add(amountTxt);

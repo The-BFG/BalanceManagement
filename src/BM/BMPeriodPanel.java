@@ -4,10 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.GregorianCalendar;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -16,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.RowFilter;
-import javax.swing.RowFilter.ComparisonType;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMPeriodPanel extends JPanel implements ActionListener {
@@ -79,30 +76,33 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>(2);
-        RowFilter rf;
-        Date startDate = null, endDate = null ;
+        GregorianCalendar date = new GregorianCalendar();
+        /*Calendar today = new GregorianCalendar();
+        System.out.println(e.getActionCommand());*/
+        String pattern = null;
         switch(e.getActionCommand()) {
-            case "giorno":
-                startDate = Calendar.getInstance().getTime();
-                endDate = Calendar.getInstance().getTime();
+            case "Giorno":
+                pattern = "(?i)^0?"+ date.get(Calendar.DAY_OF_MONTH)+"/{1}0?"+ (date.get(Calendar.MONTH)+1)+"/{1}"+date.get(Calendar.YEAR)+"$";
+                
                 break;
-            case "mese":
+            case "Mese":
+                pattern = "(?i)^0?[1-9]+[0-9]*/{1}0?"+ (date.get(Calendar.MONTH)+1)+"/{1}"+date.get(Calendar.YEAR)+"$";
                 break;
-            case "anno":
+            case "Anno":
+                pattern = "(?i)^0?[1-9]+[0-9]*/{1}0?/{1}"+date.get(Calendar.YEAR)+"$";
                 break;
-            case "Aggiungi transazione":
+            case "Visualizza periodo":
                 break;
             default:
-                startDate = Calendar.getInstance().getTime();
-                endDate = Calendar.getInstance().getTime();
+                //startDate = Calendar.getInstance().getTime();
+                //endDate = Calendar.getInstance().getTime();
         }
         try {            
-            filters.add( RowFilter.dateFilter(ComparisonType.AFTER, startDate) );
-            filters.add( RowFilter.dateFilter(ComparisonType.BEFORE, endDate) );
-            rf = RowFilter.andFilter(filters);
+            /*filters.add( RowFilter.dateFilter(ComparisonType.AFTER, startDate.getTime(), 0));
+            filters.add( RowFilter.dateFilter(ComparisonType.BEFORE, endDate.getTime() ,1) );*/
+            RowFilter rf = RowFilter.regexFilter(pattern);//RowFilter.andFilter(filters);
             tablePanel.setPeriodFilter(rf);
-            System.out.println("sono nel try dio lepre" + Calendar.getInstance().getTime().toString());
+            System.out.println(date.getTime() +" Pattern: "+ pattern);
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
