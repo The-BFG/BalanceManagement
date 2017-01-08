@@ -59,11 +59,12 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
 
         fromXDP = new JXDatePicker();
         fromXDP.setDate(Calendar.getInstance().getTime());
-        fromXDP.setFormats(BMItem.dateFormat);        
+        fromXDP.setFormats(BMItem.dateFormat); 
         toXDP = new JXDatePicker();
         toXDP.setDate(Calendar.getInstance().getTime());
         toXDP.setFormats(BMItem.dateFormat);
         setPeriod = new JButton("Visualizza periodo");
+        setPeriod.addActionListener(this);
         
         midiPanel = new JPanel();
         midiLayout = new FlowLayout(FlowLayout.LEFT);
@@ -101,9 +102,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
                 pattern = null;
                 break;
             case "Visualizza periodo":
-                String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
-                String toDate = BMItem.dateFormat.format(toXDP.getDate());
-                if(fromDate.compareTo(toDate) < 0) {
+                if(fromDate.compareTo(toDate) <= 0) {
                     pattern = createPattern(fromDate, toDate);
                 }
                 else {
@@ -124,10 +123,19 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         tablePanel.refreshTotal();
     }
     
-    private String createPattern(String fromDate, String toDate) {
+    private String createPattern(JXDatePicker fromDate, JXDatePicker toDate) {
+        String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
+         String toDate = BMItem.dateFormat.format(toXDP.getDate());
+        
         String pattern = "(?i)^";
+        System.out.println(pattern.substring((pattern.length()-9)));
         for(int i=0; pattern.substring((pattern.length()-9), pattern.length()).equals(toDate); i++) {
-            System.out.println();
+            try {
+                System.out.println(pattern.substring((pattern.length()-9)));
+            }
+            catch(StringIndexOutOfBoundsException se) {
+                pattern.concat("|"+ fromDate);
+            }
         }
         return pattern;
     }

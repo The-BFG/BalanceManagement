@@ -10,7 +10,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.TableRowSorter; 
 
 public class BMTablePanel extends JPanel {
     private JScrollPane scrollPane;
@@ -40,7 +40,7 @@ public class BMTablePanel extends JPanel {
         tableSorter = new TableRowSorter<BMTableModel>(tableModel);
         tableModel.addItem(trans1);
         tableModel.addItem(trans2);
-        tableModel.addItem(trans3);
+        tableModel.addItem(trans3); 
         tableModel.addItem(trans4);
         tableModel.addItem(trans5);
         table = new JTable(tableModel);
