@@ -102,19 +102,20 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
                 pattern = null;
                 break;
             case "Visualizza periodo":
-                if(fromDate.compareTo(toDate) <= 0) {
-                    pattern = createPattern(fromDate, toDate);
+                
+                if(BMItem.yearFormat.format(fromXDP.getDate()).compareTo(BMItem.yearFormat.format(toXDP.getDate())) <= 0) {
+                    pattern = createPattern(fromXDP, toXDP);
                 }
                 else {
-                    pattern =  createPattern(toDate, fromDate);
+                    pattern =  createPattern(toXDP, fromXDP);
                 }
                 break;
             default:
         }
         try {            
-            RowFilter rf = RowFilter.regexFilter(pattern);//RowFilter.andFilter(filters);
+            RowFilter rf = RowFilter.regexFilter(pattern);
             tablePanel.setPeriodFilter(rf);
-            //System.out.println(date.getTime() +" Pattern: "+ pattern);
+            System.out.println(date.getTime() +" Pattern: "+ pattern);
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
@@ -123,20 +124,18 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         tablePanel.refreshTotal();
     }
     
-    private String createPattern(JXDatePicker fromDate, JXDatePicker toDate) {
+    private String createPattern(JXDatePicker fromXDP, JXDatePicker toXDP) {
         String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
-         String toDate = BMItem.dateFormat.format(toXDP.getDate());
-        
-        String pattern = "(?i)^";
-        System.out.println(pattern.substring((pattern.length()-9)));
-        for(int i=0; pattern.substring((pattern.length()-9), pattern.length()).equals(toDate); i++) {
-            try {
-                System.out.println(pattern.substring((pattern.length()-9)));
-            }
-            catch(StringIndexOutOfBoundsException se) {
-                pattern.concat("|"+ fromDate);
-            }
-        }
-        return pattern;
+        String toDate = BMItem.dateFormat.format(toXDP.getDate());
+        Calendar currentDate= Calendar.getInstance();//fromXDP.add(Calendar.DATE, 1);
+        currentDate.setTime(fromXDP.getDate());
+        String pattern = "(?i)^" + fromDate;
+        //System.out.println(pattern.substring((pattern.length()-9)));
+        while(!pattern.substring((pattern.length()-10), pattern.length()).equals(toDate)) {
+                currentDate.add(Calendar.DATE, 1);
+                pattern = pattern.concat("|" + BMItem.dateFormat.format(currentDate.getTime()));
+                System.out.println(pattern.substring((pattern.length()-10)) + "--->" + toDate);
+        }        
+        return pattern+"$";
     }
 }
