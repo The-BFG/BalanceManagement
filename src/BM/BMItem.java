@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 
 public class BMItem{
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    public static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy/MM/dd");
     private GregorianCalendar date;
     private String description;
     private Double amount;
