@@ -22,17 +22,18 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private final JLabel fromLbl = new JLabel("Da:");
     private final JLabel toLbl = new JLabel("A:");
     private JRadioButton day, month, year, all;
-    private final ButtonGroup periodGrp;
+    private ButtonGroup periodGrp;
     private JXDatePicker fromXDP, toXDP;
     private JButton setPeriod;
-    private final BoxLayout panelLayout;
-    private final FlowLayout topLayout, midiLayout;
-    private final JPanel topPanel,midiPanel;
-    private final BMTablePanel tablePanel;
+    private BoxLayout panelLayout;
+    private FlowLayout topLayout, midiLayout;
+    private JPanel topPanel,midiPanel;
+    private BMTablePanel tablePanel;
     
     public BMPeriodPanel(BMTablePanel tablePanel) {
         //toModel.setYear((new GregorianCalendar().get(Calendar.YEAR)));
         this.tablePanel = tablePanel;
+        
         day = new JRadioButton("Giorno");
         month = new JRadioButton("Mese");
         year = new JRadioButton("Anno");
@@ -85,8 +86,8 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        GregorianCalendar date = new GregorianCalendar();
         //System.out.println(e.getActionCommand());
+        GregorianCalendar date = new GregorianCalendar();
         String pattern = null;
         switch(e.getActionCommand()) {
             case "Giorno":
@@ -103,12 +104,10 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
                 break;
             case "Visualizza periodo":
                 
-                if(BMItem.yearFormat.format(fromXDP.getDate()).compareTo(BMItem.yearFormat.format(toXDP.getDate())) <= 0) {
+                if(BMItem.yearFormat.format(fromXDP.getDate()).compareTo(BMItem.yearFormat.format(toXDP.getDate())) <= 0)
                     pattern = createPattern(fromXDP, toXDP);
-                }
-                else {
+                else
                     pattern =  createPattern(toXDP, fromXDP);
-                }
                 break;
             default:
         }
@@ -119,7 +118,6 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
-            //System.out.println("Nessun dato da mostrare");
         }
         tablePanel.refreshTotal();
     }
@@ -127,7 +125,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private String createPattern(JXDatePicker fromXDP, JXDatePicker toXDP) {
         String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
         String toDate = BMItem.dateFormat.format(toXDP.getDate());
-        Calendar currentDate= Calendar.getInstance();//fromXDP.add(Calendar.DATE, 1);
+        Calendar currentDate= Calendar.getInstance();
         currentDate.setTime(fromXDP.getDate());
         String pattern = "(?i)^" + fromDate;
         //System.out.println(pattern.substring((pattern.length()-9)));
