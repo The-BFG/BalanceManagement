@@ -7,10 +7,15 @@ import javax.swing.*;
 
 public class BudgetManagement {
     public static final Color PANEL_COLOR = Color.pink;
+        private static BMMenuBar menu;
+    
     public static void main(String[] args)  {
         JFrame mainFrame = new JFrame("Budget Management");
         mainFrame.setLocation(100, 20);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        menu = new BMMenuBar();
+        mainFrame.setJMenuBar(menu);
         
         BMTablePanel table = new BMTablePanel();
         BMPeriodPanel period = new BMPeriodPanel(table);
