@@ -1,10 +1,12 @@
 package BM;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
 
 public class BudgetManagement {
+    public static final Color PANEL_COLOR = Color.pink;
     public static void main(String[] args)  {
         JFrame mainFrame = new JFrame("Budget Management");
         mainFrame.setLocation(100, 20);
@@ -14,7 +16,7 @@ public class BudgetManagement {
         BMPeriodPanel period = new BMPeriodPanel(table);
         BMAddTransactionPanel addTransaction = new BMAddTransactionPanel((BMTableModel)table.getTable().getModel());
         
-        JPanel mainPanel = (JPanel) mainFrame.getContentPane();        
+        JPanel mainPanel = (JPanel) mainFrame.getContentPane();  
         BorderLayout mainLayout = new BorderLayout();
         mainPanel.setLayout(mainLayout);        
         mainPanel.add(period, BorderLayout.NORTH);

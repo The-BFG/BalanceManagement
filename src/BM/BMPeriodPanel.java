@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,9 +21,10 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private final JLabel periodLbl = new JLabel("Mostra le transazioni del:");
     private final JLabel fromLbl = new JLabel("Da:");
     private final JLabel toLbl = new JLabel("A:");
-    private final JRadioButton day, month, year;
+    private JRadioButton day, month, year, all;
     private final ButtonGroup periodGrp;
     private JXDatePicker fromXDP, toXDP;
+    private JButton setPeriod;
     private final BoxLayout panelLayout;
     private final FlowLayout topLayout, midiLayout;
     private final JPanel topPanel,midiPanel;
@@ -34,14 +36,17 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         day = new JRadioButton("Giorno");
         month = new JRadioButton("Mese");
         year = new JRadioButton("Anno");
-        year.setSelected(true);
+        all = new JRadioButton("Tutte le transazioni");
+        all.setSelected(true);
         periodGrp = new ButtonGroup();
         periodGrp.add(day); 
         periodGrp.add(month); 
         periodGrp.add(year);
+        periodGrp.add(all);
         day.addActionListener(this); 
         month.addActionListener(this);
         year.addActionListener(this);
+        all.addActionListener(this);
               
         topPanel = new JPanel();
         topLayout = new FlowLayout(FlowLayout.LEFT);
@@ -50,6 +55,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         topPanel.add(day);
         topPanel.add(month);
         topPanel.add(year);
+        topPanel.add(all);
 
         fromXDP = new JXDatePicker();
         fromXDP.setDate(Calendar.getInstance().getTime());
@@ -57,6 +63,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         toXDP = new JXDatePicker();
         toXDP.setDate(Calendar.getInstance().getTime());
         toXDP.setFormats(BMItem.dateFormat);
+        setPeriod = new JButton("Visualizza periodo");
         
         midiPanel = new JPanel();
         midiLayout = new FlowLayout(FlowLayout.LEFT);
@@ -66,47 +73,62 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         midiPanel.add(Box.createRigidArea(new Dimension(10,0)));
         midiPanel.add(toLbl);
         midiPanel.add((JComponent)toXDP);
+        midiPanel.add(setPeriod);
         
         panelLayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(panelLayout);
         add(topPanel);
         add(midiPanel);
-        add(Box.createRigidArea(new Dimension(0,10)));
+        add(Box.createRigidArea(new Dimension(0,7)));
     }    
 
     @Override
     public void actionPerformed(ActionEvent e) {
         GregorianCalendar date = new GregorianCalendar();
-        /*Calendar today = new GregorianCalendar();
-        System.out.println(e.getActionCommand());*/
+        //System.out.println(e.getActionCommand());
         String pattern = null;
         switch(e.getActionCommand()) {
             case "Giorno":
-                pattern = "(?i)^0?"+ date.get(Calendar.DAY_OF_MONTH)+"/{1}0?"+ (date.get(Calendar.MONTH)+1)+"/{1}"+date.get(Calendar.YEAR)+"$";
-                
+                pattern = "(?i)^0?"+ date.get(Calendar.DAY_OF_MONTH)+"/{1}0?"+ (date.get(Calendar.MONTH)+1)+"/{1}"+date.get(Calendar.YEAR)+"$";                
                 break;
             case "Mese":
                 pattern = "(?i)^0?[1-9]+[0-9]*/{1}0?"+ (date.get(Calendar.MONTH)+1)+"/{1}"+date.get(Calendar.YEAR)+"$";
                 break;
             case "Anno":
-                pattern = "(?i)^0?[1-9]+[0-9]*/{1}0?/{1}"+date.get(Calendar.YEAR)+"$";
+                pattern = "(?i)^0?[1-9]+[0-9]*/{1}0?1?[0-9]+/{1}"+date.get(Calendar.YEAR)+"$";
+                break;
+            case "Tutte le transazioni":
+                pattern = null;
                 break;
             case "Visualizza periodo":
+                String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
+                String toDate = BMItem.dateFormat.format(toXDP.getDate());
+                if(fromDate.compareTo(toDate) < 0) {
+                    pattern = createPattern(fromDate, toDate);
+                }
+                else {
+                    pattern =  createPattern(toDate, fromDate);
+                }
                 break;
             default:
-                //startDate = Calendar.getInstance().getTime();
-                //endDate = Calendar.getInstance().getTime();
         }
         try {            
-            /*filters.add( RowFilter.dateFilter(ComparisonType.AFTER, startDate.getTime(), 0));
-            filters.add( RowFilter.dateFilter(ComparisonType.BEFORE, endDate.getTime() ,1) );*/
             RowFilter rf = RowFilter.regexFilter(pattern);//RowFilter.andFilter(filters);
             tablePanel.setPeriodFilter(rf);
-            System.out.println(date.getTime() +" Pattern: "+ pattern);
+            //System.out.println(date.getTime() +" Pattern: "+ pattern);
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
-            System.out.println("sono nel catch dio nigga");
+            //System.out.println("Nessun dato da mostrare");
         }
+        tablePanel.refreshTotal();
+    }
+    
+    private String createPattern(String fromDate, String toDate) {
+        String pattern = "(?i)^";
+        for(int i=0; pattern.substring((pattern.length()-9), pattern.length()).equals(toDate); i++) {
+            System.out.println();
+        }
+        return pattern;
     }
 }
