@@ -6,6 +6,8 @@
 package BM;
 
 import Export.AbstractExport;
+import Export.ExportCSV;
+import Export.ExportTSV;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -99,12 +101,13 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             case "Esci":
                 System.exit(0);
                 break;
-            case "Esporta in formato CSV":
-                
-                break;
-                
-            case "Esporta in formato TSV":
-                
+            case "Esporta in formato CommaSV":
+                AbstractExport exportCSV = new ExportCSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+                exportCSV.exportData();
+                break;                
+            case "Esporta in formato TabSV":
+                AbstractExport exportTSV = new ExportTSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+                exportTSV.exportData();
                 break;
             case "Esporta in formato ODT":
                 
@@ -133,6 +136,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             table.refreshTotal();
         }
     }
+    
     private void saveArchive() throws FileNotFoundException, IOException {
         String date="";
         String filePath; 

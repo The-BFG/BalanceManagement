@@ -5,28 +5,33 @@
  */
 package Export;
 
+import BM.BMItem;
+import java.util.ArrayList;
+
 /**
  *
  * @author giacomo
  */
 public class ExportTSV extends AbstractExport{
     
-    public ExportTSV(){
-        super.separator = "\t";
+    public ExportTSV(ArrayList<BMItem> transactions){
+        super(transactions);
+        super.setSeparator("\t");
     }
-    
-    /*@Override
-    public void setSeparator() {
-        super.separator = "\t";      
-    }*/
 
     @Override
     public String getSeparator() {
         return "\t";
-    }    
+    }
+    
+    @Override
+    public String getExtension() {
+        return ".tsv";
+    }
 
     @Override
-    public String recordToString() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    protected String getDefaultPath() {
+        return "./archive/tsv";
     }
+    
 }

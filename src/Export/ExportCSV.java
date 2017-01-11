@@ -1,31 +1,31 @@
 package Export;
 
+import BM.BMItem;
+import java.util.ArrayList;
+
 /**
  *
  * @author giacomo
  */
 public class ExportCSV extends AbstractExport {
-   
     
-    public ExportCSV() {
-        super.separator = ",";
+    public ExportCSV(ArrayList<BMItem> transactions) {        
+        super(transactions);
+        super.setSeparator(",");
     }
-
-    /*@Override
-    public void setSeparator() {
-        super.separator = ",";
-    }*/
 
     @Override
     public String getSeparator() {
         return ",";
-    }
+    }  
     
     @Override
-    public String recordToString() {
-        String record = "";
-        
-        return record;
+    public String getExtension() {
+        return ".csv";
     }
-    
+
+    @Override
+    protected String getDefaultPath() {
+        return "./archive/csv";
+    }
 }
