@@ -14,6 +14,7 @@ import javax.swing.JTextField;
  * @author giacomo
  */
 public class BMTextField extends JTextField implements FocusListener  {
+    private static final long serialVersionUID = 1L;
     private String firstTxt;
     
     public BMTextField (){

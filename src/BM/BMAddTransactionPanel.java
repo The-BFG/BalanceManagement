@@ -15,14 +15,15 @@ import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMAddTransactionPanel extends JPanel implements ActionListener {
-    private final JLabel addLbl = new JLabel("  Inserisci i dettagli della nuova transazione da aggiungere al bilancio:");
-    private final BorderLayout panelLayout;
-    private final BoxLayout centerLayout, topLayout;
-    private final JPanel topPanel, centerPanel;
+    private static final long serialVersionUID = 1L;
+    private JLabel addLbl = new JLabel("  Inserisci i dettagli della nuova transazione da aggiungere al bilancio:");
+    private BorderLayout panelLayout;
+    private BoxLayout centerLayout, topLayout;
+    private JPanel topPanel, centerPanel;
     
-    private final JButton addBtn;
-    private final BMTextField descTxt, amountTxt;
-    private final JXDatePicker insertXDP;
+    private JButton addBtn;
+    private BMTextField descTxt, amountTxt;
+    private JXDatePicker insertXDP;
     
     private BMTablePanel table;
     private BMTableModel tableModel;

@@ -10,6 +10,7 @@ import java.util.GregorianCalendar;
 import java.io.Serializable;
 
 public class BMItem implements Serializable{
+    private static final long serialVersionUID = 1L;
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy/MM/dd");
     public static final SimpleDateFormat completeDate = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");

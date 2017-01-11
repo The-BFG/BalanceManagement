@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class BudgetManagement {
     public static final Color PANEL_COLOR = Color.pink;
-        private static BMMenuBar menu;
+    private static BMMenuBar menu;
     
     public static void main(String[] args)  {
         JFrame mainFrame = new JFrame("Budget Management");

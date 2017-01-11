@@ -32,6 +32,7 @@ import javax.swing.KeyStroke;
  * @author giacomo
  */
 public class BMMenuBar  extends JMenuBar implements ActionListener{
+    private static final long serialVersionUID = 1L;
     private JMenu fileMenu = new JMenu("File");
     private JMenuItem openArchive = new JMenuItem("Apri archivio");
     private JMenuItem saveArchive = new JMenuItem("Salva archivio");
@@ -121,12 +122,18 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         open.setFileSelectionMode(JFileChooser.FILES_ONLY);
         open.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
         int returnVal = open.showOpenDialog(this);
-        ArrayList<BMItem> transactions;
+        ArrayList<BMItem> transactions = new ArrayList<BMItem>();
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             ((BMTableModel)table.getTable().getModel()).resetTableModel();
             String filePath = open.getSelectedFile().getAbsolutePath();
             try (FileInputStream fin = new FileInputStream(filePath); ObjectInputStream ois = new ObjectInputStream(fin)) {
-                transactions = (ArrayList<BMItem>) ois.readObject();
+                Object obj = ois.readObject();
+                if(obj instanceof ArrayList<?> )
+                    for(Object e : (ArrayList<?>)obj){
+                        if(e != null && e instanceof BMItem)
+                            transactions.add((BMItem)e);
+                    }
+                    //transactions = (ArrayList<BMItem>) obj;
             }
             
             ((BMTableModel) table.getTable().getModel()).setTransactionList(transactions);

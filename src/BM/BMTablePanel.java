@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter; 
 
 public class BMTablePanel extends JPanel {
+    private static final long serialVersionUID = 1L;
     private JScrollPane scrollPane;
     private BorderLayout tablePanelLayout;
     private BMTableModel tableModel; 
@@ -83,7 +84,7 @@ public class BMTablePanel extends JPanel {
     public JTable getTable() {
         return table;
     }
-    public void setPeriodFilter(RowFilter rf) {
+    public void setPeriodFilter(RowFilter<BMTableModel,Object> rf) {
         tableSorter.setRowFilter(rf);
     }
     private Double getTotal() {

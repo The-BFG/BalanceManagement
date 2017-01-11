@@ -18,6 +18,7 @@ import javax.swing.RowFilter;
 import org.jdesktop.swingx.JXDatePicker;
 
 public class BMPeriodPanel extends JPanel implements ActionListener {
+    private static final long serialVersionUID = 1L;
     private final JLabel periodLbl = new JLabel("Mostra le transazioni del:");
     private final JLabel fromLbl = new JLabel("Da:");
     private final JLabel toLbl = new JLabel("A:");
@@ -112,7 +113,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
             default:
         }
         try {            
-            RowFilter rf = RowFilter.regexFilter(pattern);
+            RowFilter<BMTableModel, Object> rf = RowFilter.regexFilter(pattern);
             tablePanel.setPeriodFilter(rf);
             //System.out.println(date.getTime() +" Pattern: "+ pattern);
         }

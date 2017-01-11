@@ -1,11 +1,14 @@
 package BM;
 
+import java.io.Serializable;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class BMTableModel extends AbstractTableModel implements java.io.Serializable{
+public class BMTableModel extends AbstractTableModel implements Serializable{
+    private static final long serialVersionUID = 1L;
+
     private ArrayList<BMItem> transactions = null;
     private final String[] colName = {"Date","Description","Amount","Edit"};
     private List<boolean[]> editable;
