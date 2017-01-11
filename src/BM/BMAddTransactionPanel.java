@@ -70,8 +70,8 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         if( !descTxt.getText().equals("") && !amountTxt.getText().equals("") && !(insertXDP.getDate() == null)) {
             Double amount;
             try {
-                System.out.println(String.format("%1$.2f", Double.parseDouble(amountTxt.getText())));
-                amount = Double.parseDouble(String.format("%1$.2f", Double.parseDouble(amountTxt.getText())));
+                //System.out.println(String.format("%1$.2f", Double.parseDouble(amountTxt.getText())));
+                amount = Double.parseDouble(String.format("%1$.2f", Double.parseDouble(amountTxt.getText())).replace(',', '.'));
                 GregorianCalendar calendar = new GregorianCalendar();
                 String date = BMItem.dateFormat.format(insertXDP.getDate());
                 calendar.set( Integer.parseInt(date.substring(6, 10)), (Integer.parseInt(date.substring(3, 5)) - 1), Integer.parseInt(date.substring(0, 2)));
