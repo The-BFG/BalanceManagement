@@ -102,12 +102,12 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 System.exit(0);
                 break;
             case "Esporta in formato CommaSV":
-                AbstractExport exportCSV = new ExportCSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
-                exportCSV.exportData();
+                AbstractExport exportCsv = new ExportCSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+                exportCsv.exportData();
                 break;                
             case "Esporta in formato TabSV":
-                AbstractExport exportTSV = new ExportTSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
-                exportTSV.exportData();
+                AbstractExport exportTsv = new ExportTSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+                exportTsv.exportData();
                 break;
             case "Esporta in formato ODT":
                 
@@ -125,12 +125,9 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             ((BMTableModel)table.getTable().getModel()).resetTableModel();
             String filePath = open.getSelectedFile().getAbsolutePath();
-            //System.out.println(filePath);
-            FileInputStream fin = new FileInputStream(filePath);
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            transactions = (ArrayList<BMItem>) ois.readObject();
-            ois.close();
-            fin.close();
+            try (FileInputStream fin = new FileInputStream(filePath); ObjectInputStream ois = new ObjectInputStream(fin)) {
+                transactions = (ArrayList<BMItem>) ois.readObject();
+            }
             
             ((BMTableModel) table.getTable().getModel()).setTransactionList(transactions);
             table.refreshTotal();
@@ -166,12 +163,9 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             }
             filePath = save.getSelectedFile().getAbsolutePath() + date;
             //System.out.println(filePath);
-            
-            FileOutputStream fout = new FileOutputStream(filePath);
-            ObjectOutputStream oos = new ObjectOutputStream(fout);
-            oos.writeObject(((BMTableModel)table.getTable().getModel()).getTransactionsList());
-            oos.close();
-            fout.close();
+            try (FileOutputStream fout = new FileOutputStream(filePath); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+                oos.writeObject(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+            }
         }
     }    
 }
