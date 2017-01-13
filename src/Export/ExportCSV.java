@@ -26,6 +26,6 @@ public class ExportCSV extends AbstractExport {
 
     @Override
     protected String getDefaultPath() {
-        return "./archive/csv";
+        return (System.getProperty("user.dir").endsWith("class")) ? "../archive/csv" : "./archive/csv";
     }
 }

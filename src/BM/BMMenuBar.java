@@ -41,6 +41,7 @@ import org.jopendocument.dom.spreadsheet.SpreadSheet;
 public class BMMenuBar  extends JMenuBar implements ActionListener{
     private static final long serialVersionUID = 1L;
     private JMenu fileMenu = new JMenu("File");
+    private JMenuItem newArchive = new JMenuItem("Nuovo archivio");
     private JMenuItem openArchive = new JMenuItem("Apri archivio");
     private JMenuItem saveArchive = new JMenuItem("Salva archivio");
     private JMenuItem print = new JMenuItem("Stampa");
@@ -49,18 +50,22 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
     private JMenu exportMenu = new JMenu("Esporta");
     private JMenuItem exportCSV = new JMenuItem("Esporta in formato CommaSV");
     private JMenuItem exportTSV = new JMenuItem("Esporta in formato TabSV");
-    private JMenuItem exportOpenDocument = new JMenuItem("Esporta in formato OpenDocument"); 
+    private JMenuItem exportOpenDocument = new JMenuItem("Esporta in formato OpenDocument");
     
     private BMTablePanel table;    
     
     public BMMenuBar(BMTablePanel table) {
         this.table = table;
         
+        fileMenu.add(newArchive);
         fileMenu.add(openArchive);
         fileMenu.add(saveArchive);
+        fileMenu.addSeparator();
         fileMenu.add(print);
         fileMenu.addSeparator();
         fileMenu.add(exitBM);
+        newArchive.addActionListener(this);
+        newArchive.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         openArchive.addActionListener(this);
         openArchive.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         saveArchive.addActionListener(this);
@@ -85,6 +90,14 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
         switch(e.getActionCommand()) {
+            case "Nuovo archivio":
+                int confirmVal = JOptionPane.showConfirmDialog(null, "Vuoi salvare l'archivio aperto prima di aprire un archivio vuoto?", "Conferma apertura nuovo archivio.", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+                if(confirmVal == JOptionPane.YES_OPTION)    
+                    saveArchive();               
+                                
+                ((BMTableModel)table.getTable().getModel()).resetTableModel();
+                table.refreshTotal();                
+                break;
             case "Apri archivio":
                 try {
                     openArchive();
@@ -103,15 +116,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 }
                 break;
             case "Salva archivio":
-                try {
                     saveArchive();
-                }
-                catch (FileNotFoundException fnf) {
-                    System.out.println("Impossibile trovare il file.\n" + fnf);
-                }
-                catch (IOException ioe) {
-                    System.out.println("Errore di I/O.\n" + ioe);
-                }
                 break;
             case "Stampa":
                 MessageFormat header = new MessageFormat("Gestione Bilancio");
@@ -143,32 +148,36 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 exportTsv.exportData();
                 break;
             case "Esporta in formato OpenDocument":
-                String date = BMItem.completeDate.format(Calendar.getInstance().getTime());
-                final File file = new File("./archive/ods/Archivio("+date+")");
-                try {
-                    SpreadSheet.createEmpty((BMTableModel)table.getTable().getModel()).saveAs(file);
-                    OOUtils.open(new File(file.getAbsolutePath() +".ods"));               
+                if(((BMTableModel)table.getTable().getModel()).getTransactionsList().size() > 0) {
+                    String date = BMItem.completeDate.format(Calendar.getInstance().getTime());
+                    final File file = new File(((System.getProperty("user.dir").endsWith("class")) ? "../archive/ods/Archivio(" : "./archive/ods/Archivio(")+date+")");
+                    try {
+                        SpreadSheet.createEmpty((BMTableModel)table.getTable().getModel()).saveAs(file);
+                        OOUtils.open(new File(file.getAbsolutePath() +".ods"));               
+                    }
+                    catch(FileNotFoundException fnf) {
+                        System.out.println("File non trovato.\n" + fnf);
+                    } 
+                    catch (IOException ex) {
+                        System.out.println("Errore di Input/Output.\n" + ex);   
+                    } 
                 }
-                catch(FileNotFoundException fnf) {
-                    System.out.println("File non trovato.\n" + fnf);
-                } 
-                catch (IOException ex) {
-                    System.out.println("Errore di Input/Output.\n" + ex);   
-                }    
+                else {
+                    JOptionPane.showMessageDialog(null, "Esportazione annullata perche non è presente alcuna transazione.", "Esportazione annullata", JOptionPane.WARNING_MESSAGE);
+                }
                 break;
             default:
         }
     }
-    private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {      
-        JFileChooser open = new JFileChooser("./archive/bin");
+    private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {   
+        JFileChooser open = new JFileChooser((System.getProperty("user.dir").endsWith("class")) ? "../archive/bin" : "./archive/bin");             
         open.setMultiSelectionEnabled(false);
         open.setFileSelectionMode(JFileChooser.FILES_ONLY);
         open.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
         int returnVal = open.showOpenDialog(this);
         
         ArrayList<BMItem> transactions = new ArrayList<BMItem>();
-        if(returnVal == JFileChooser.APPROVE_OPTION) {
-            
+        if(returnVal == JFileChooser.APPROVE_OPTION) {            
             ((BMTableModel)table.getTable().getModel()).resetTableModel();
             
             String filePath = open.getSelectedFile().getAbsolutePath();
@@ -187,11 +196,11 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         }
     }
     
-    private void saveArchive() throws FileNotFoundException, IOException {
+    private void saveArchive(){
         String date="";
         String filePath; 
 
-        JFileChooser save = new JFileChooser("./archive/bin");
+        JFileChooser save = new JFileChooser((System.getProperty("user.dir").endsWith("class")) ? "../archive/bin" : "./archive/bin");
         save.setMultiSelectionEnabled(false);
         save.setFileSelectionMode(JFileChooser.FILES_ONLY);
         save.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
@@ -216,8 +225,16 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             }
             filePath = save.getSelectedFile().getAbsolutePath() + date;
             //System.out.println(filePath);
-            try (FileOutputStream fout = new FileOutputStream(filePath); ObjectOutputStream oos = new ObjectOutputStream(fout)) {
+            try {
+                FileOutputStream fout = new FileOutputStream(filePath);
+                ObjectOutputStream oos = new ObjectOutputStream(fout);
                 oos.writeObject(((BMTableModel)table.getTable().getModel()).getTransactionsList());
+            } 
+            catch (FileNotFoundException fnf) {
+                    System.out.println("Impossibile trovare il file.\n" + fnf);
+            } 
+            catch (IOException ioe) {
+                    System.out.println("Errore di I/O.\n" + ioe);
             }
         }
     }    

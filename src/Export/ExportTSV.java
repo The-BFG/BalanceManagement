@@ -31,7 +31,7 @@ public class ExportTSV extends AbstractExport{
 
     @Override
     protected String getDefaultPath() {
-        return "./archive/tsv";
+        return (System.getProperty("user.dir").endsWith("class")) ? "../archive/tsv" : "./archive/tsv";
     }
     
 }
