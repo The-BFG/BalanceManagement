@@ -5,6 +5,7 @@
  */
 package BM;
 
+import Export.AbstractExport;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -16,10 +17,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 /**
@@ -109,9 +112,8 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             default:
         }
     }
-    private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {
-        
-        JFileChooser open = new JFileChooser("./archive");
+    private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {      
+        JFileChooser open = new JFileChooser("./archive/bin");
         open.setMultiSelectionEnabled(false);
         open.setFileSelectionMode(JFileChooser.FILES_ONLY);
         open.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
@@ -120,7 +122,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         if(returnVal == JFileChooser.APPROVE_OPTION) {
             ((BMTableModel)table.getTable().getModel()).resetTableModel();
             String filePath = open.getSelectedFile().getAbsolutePath();
-            System.out.println(filePath);
+            //System.out.println(filePath);
             FileInputStream fin = new FileInputStream(filePath);
             ObjectInputStream ois = new ObjectInputStream(fin);
             transactions = (ArrayList<BMItem>) ois.readObject();
@@ -132,15 +134,35 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         }
     }
     private void saveArchive() throws FileNotFoundException, IOException {
-        JFileChooser save = new JFileChooser("./archive");
+        String date="";
+        String filePath; 
+
+        JFileChooser save = new JFileChooser("./archive/bin");
         save.setMultiSelectionEnabled(false);
         save.setFileSelectionMode(JFileChooser.FILES_ONLY);
         save.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
         save.setSelectedFile(new File("MioArchivio"));
         int returnVal = save.showSaveDialog(save);
+        
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            String filePath = save.getSelectedFile().getAbsolutePath()+".bin";
-            System.out.println(filePath);
+            if(save.getSelectedFile().exists()) {
+                int optVal =JOptionPane.showConfirmDialog(  
+                        null,
+                        "Vuoi davvero sovrascrivere il file: "+ save.getSelectedFile().getName() +" ?",
+                        "Sovrascrivere", 
+                        JOptionPane.YES_NO_OPTION, 
+                        JOptionPane.QUESTION_MESSAGE);
+                if(optVal == JOptionPane.YES_OPTION)
+                    save.getSelectedFile().delete();
+                else {
+                    date = "(";
+                    date = date.concat(BMItem.completeDate.format(Calendar.getInstance().getTime()) + ")");
+                    //System.out.println(date);
+                }
+            }
+            filePath = save.getSelectedFile().getAbsolutePath() + date;
+            //System.out.println(filePath);
+            
             FileOutputStream fout = new FileOutputStream(filePath);
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(((BMTableModel)table.getTable().getModel()).getTransactionsList());

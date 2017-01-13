@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class BMItem implements Serializable{
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy/MM/dd");
+    public static final SimpleDateFormat completeDate = new SimpleDateFormat("dd-MM-yyyy_HH:mm:ss");
     private GregorianCalendar date;
     private String description;
     private Double amount;
