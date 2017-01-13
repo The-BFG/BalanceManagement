@@ -24,15 +24,17 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
     private final BMTextField descTxt, amountTxt;
     private final JXDatePicker insertXDP;
     
+    private BMTablePanel table;
     private BMTableModel tableModel;
 
-    public BMAddTransactionPanel(BMTableModel tableModel) {
-        this.tableModel = tableModel;
+    public BMAddTransactionPanel(BMTablePanel table) {
+        this.table = table;
+        this.tableModel = (BMTableModel) table.getTable().getModel();
         
         topPanel = new JPanel();
         topLayout = new BoxLayout(topPanel, BoxLayout.Y_AXIS);
         topPanel.setLayout(topLayout);
-        topPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        topPanel.add(Box.createRigidArea(new Dimension(0,15)));
         topPanel.add(addLbl);
         topPanel.add(Box.createRigidArea(new Dimension(0,5)));
 
@@ -72,13 +74,14 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
                 GregorianCalendar calendar = new GregorianCalendar();
                 String date = BMItem.dateFormat.format(insertXDP.getDate());
                 calendar.set( Integer.parseInt(date.substring(6, 10)), (Integer.parseInt(date.substring(3, 5)) - 1), Integer.parseInt(date.substring(0, 2)));
-                //calendar.set(2045,11,1);
                 
                 BMItem item = new BMItem(calendar, descTxt.getText(), amount);
                 tableModel.addItem(item);
                 
                 descTxt.setText("Transaction description");
                 amountTxt.setText("Amount");
+                
+                table.refreshTotal();
                 /*for(int i=0; i<tableModel.getRowCount();i++) {
                     for(int j=0; j<tableModel.getColumnCount();j++) {
                         System.out.println(String.valueOf(i) + tableModel.getValueAt(i, j).toString());

@@ -14,12 +14,12 @@ public class BudgetManagement {
         mainFrame.setLocation(100, 20);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        menu = new BMMenuBar();
-        mainFrame.setJMenuBar(menu);
-        
         BMTablePanel table = new BMTablePanel();
         BMPeriodPanel period = new BMPeriodPanel(table);
-        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel((BMTableModel)table.getTable().getModel());
+        BMAddTransactionPanel addTransaction = new BMAddTransactionPanel(table);
+        
+        menu = new BMMenuBar(table);
+        mainFrame.setJMenuBar(menu);
         
         JPanel mainPanel = (JPanel) mainFrame.getContentPane();  
         BorderLayout mainLayout = new BorderLayout();

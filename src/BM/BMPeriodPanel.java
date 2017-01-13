@@ -114,7 +114,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         try {            
             RowFilter rf = RowFilter.regexFilter(pattern);
             tablePanel.setPeriodFilter(rf);
-            System.out.println(date.getTime() +" Pattern: "+ pattern);
+            //System.out.println(date.getTime() +" Pattern: "+ pattern);
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
@@ -132,7 +132,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         while(!pattern.substring((pattern.length()-10), pattern.length()).equals(toDate)) {
                 currentDate.add(Calendar.DATE, 1);
                 pattern = pattern.concat("|" + BMItem.dateFormat.format(currentDate.getTime()));
-                System.out.println(pattern.substring((pattern.length()-10)) + "--->" + toDate);
+                //System.out.println(pattern.substring((pattern.length()-10)) + "--->" + toDate);
         }        
         return pattern+"$";
     }

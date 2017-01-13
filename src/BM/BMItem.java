@@ -7,8 +7,9 @@ package BM;
  */
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.io.Serializable;
 
-public class BMItem{
+public class BMItem implements Serializable{
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     public static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy/MM/dd");
     private GregorianCalendar date;
