@@ -83,7 +83,17 @@ public class BMTableModel extends AbstractTableModel implements java.io.Serializ
                 break;
         }
         fireTableDataChanged();
-    }  
+    } 
+    
+    public void removeRow(int row) {
+        this.fireTableRowsDeleted(row, row);
+    }
+    
+    public void resetTableModel() {
+        if(getRowCount() > 0)
+            //while(getRowCount())
+            this.fireTableRowsDeleted(0, getRowCount()-1);
+    }
     
     public void addItem(BMItem item) {
         transactions.add(item);

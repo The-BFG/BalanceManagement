@@ -93,6 +93,6 @@ public class BMTablePanel extends JPanel {
         return totalTransaction;
     }  
     public final void refreshTotal() {
-        totalTxt.setText(getTotal().toString());
+        totalTxt.setText(String.format("%.2f", getTotal()));
     }
 }

@@ -110,6 +110,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         }
     }
     private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {
+        
         JFileChooser open = new JFileChooser("./archive");
         open.setMultiSelectionEnabled(false);
         open.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -117,6 +118,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         int returnVal = open.showOpenDialog(this);
         ArrayList<BMItem> transactions;
         if(returnVal == JFileChooser.APPROVE_OPTION) {
+            ((BMTableModel)table.getTable().getModel()).resetTableModel();
             String filePath = open.getSelectedFile().getAbsolutePath();
             System.out.println(filePath);
             FileInputStream fin = new FileInputStream(filePath);
