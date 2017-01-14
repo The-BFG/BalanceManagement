@@ -8,9 +8,11 @@ package BM;
 import Export.AbstractExport;
 import Export.ExportCSV;
 import Export.ExportTSV;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,21 +20,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTable.PrintMode;
 import javax.swing.KeyStroke;
 import org.jopendocument.dom.OOUtils;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
-import org.jopendocument.model.OpenDocument;
-import org.jopendocument.panel.ODSViewerPanel;
 
 /**
  *
@@ -43,6 +43,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
     private JMenu fileMenu = new JMenu("File");
     private JMenuItem openArchive = new JMenuItem("Apri archivio");
     private JMenuItem saveArchive = new JMenuItem("Salva archivio");
+    private JMenuItem print = new JMenuItem("Stampa");
     private JMenuItem exitBM = new JMenuItem("Esci");
     
     private JMenu exportMenu = new JMenu("Esporta");
@@ -57,12 +58,15 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         
         fileMenu.add(openArchive);
         fileMenu.add(saveArchive);
+        fileMenu.add(print);
         fileMenu.addSeparator();
         fileMenu.add(exitBM);
         openArchive.addActionListener(this);
         openArchive.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
         saveArchive.addActionListener(this);
         saveArchive.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        print.addActionListener(this);
+        print.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.CTRL_MASK));
         exitBM.addActionListener(this);        
         exitBM.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
         
@@ -108,6 +112,24 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 catch (IOException ioe) {
                     System.out.println("Errore di I/O.\n" + ioe);
                 }
+                break;
+            case "Stampa":
+                MessageFormat header = new MessageFormat("Gestione Bilancio");
+                MessageFormat footer = new MessageFormat(BMItem.completeDate.format(Calendar.getInstance().getTime()));
+                boolean printVal = false;
+                try {
+                    printVal = table.getTable().print(PrintMode.FIT_WIDTH, header, footer);
+                }
+                catch (PrinterException pe) {
+                    System.out.println("Impossibile stampare.\n" + pe);
+                }
+                if (printVal) {
+                    Image image = new ImageIcon("./icon/successful.png","").getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
+                    ImageIcon icon = new ImageIcon(image);
+                    JOptionPane.showMessageDialog(null, "La stampa è avvenuta con successo", "Esito Stampa", JOptionPane.INFORMATION_MESSAGE, icon);
+                }
+                else
+                    JOptionPane.showMessageDialog(null, "La stampa non è avvenuta con successo", "Esito Stampa", JOptionPane.WARNING_MESSAGE);
                 break;
             case "Esci":
                 System.exit(0);
@@ -159,8 +181,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                         }
                     }
                 }
-            }
-            
+            }            
             ((BMTableModel) table.getTable().getModel()).setTransactionList(transactions);
             table.refreshTotal();
         }

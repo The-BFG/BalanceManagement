@@ -58,7 +58,6 @@ public abstract class AbstractExport {
                 try { 
                     fout = new FileWriter(path); 
                     for(int i=0; i < transactions.size(); i++) {
-
                         record = recordToString(transactions.get(i));
                         try{
                             fout.write(record);
