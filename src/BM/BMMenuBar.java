@@ -20,12 +20,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import org.jopendocument.dom.OOUtils;
+import org.jopendocument.dom.spreadsheet.SpreadSheet;
+import org.jopendocument.model.OpenDocument;
+import org.jopendocument.panel.ODSViewerPanel;
 
 /**
  *
@@ -41,7 +48,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
     private JMenu exportMenu = new JMenu("Esporta");
     private JMenuItem exportCSV = new JMenuItem("Esporta in formato CommaSV");
     private JMenuItem exportTSV = new JMenuItem("Esporta in formato TabSV");
-    private JMenuItem exportOpenDocument = new JMenuItem("Esporta in formato OpenDoument"); 
+    private JMenuItem exportOpenDocument = new JMenuItem("Esporta in formato OpenDocument"); 
     
     private BMTablePanel table;    
     
@@ -86,7 +93,10 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 } 
                 catch (ClassNotFoundException cnf) { 
                     System.out.println("Classe non trovata.\n" + cnf);
-                }                
+                }    
+                catch (ArrayIndexOutOfBoundsException aio) {
+                    System.out.println("Errore apertura\n" + aio);
+                }
                 break;
             case "Salva archivio":
                 try {
@@ -110,8 +120,19 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 AbstractExport exportTsv = new ExportTSV(((BMTableModel)table.getTable().getModel()).getTransactionsList());
                 exportTsv.exportData();
                 break;
-            case "Esporta in formato ODT":
-                
+            case "Esporta in formato OpenDocument":
+                String date = BMItem.completeDate.format(Calendar.getInstance().getTime());
+                final File file = new File("./archive/ods/Archivio("+date+")");
+                try {
+                    SpreadSheet.createEmpty((BMTableModel)table.getTable().getModel()).saveAs(file);
+                    OOUtils.open(new File(file.getAbsolutePath() +".ods"));               
+                }
+                catch(FileNotFoundException fnf) {
+                    System.out.println("File non trovato.\n" + fnf);
+                } 
+                catch (IOException ex) {
+                    System.out.println("Errore di Input/Output.\n" + ex);   
+                }    
                 break;
             default:
         }
@@ -122,18 +143,22 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         open.setFileSelectionMode(JFileChooser.FILES_ONLY);
         open.setApproveButtonMnemonic(KeyEvent.VK_ENTER);
         int returnVal = open.showOpenDialog(this);
+        
         ArrayList<BMItem> transactions = new ArrayList<BMItem>();
         if(returnVal == JFileChooser.APPROVE_OPTION) {
+            
             ((BMTableModel)table.getTable().getModel()).resetTableModel();
+            
             String filePath = open.getSelectedFile().getAbsolutePath();
             try (FileInputStream fin = new FileInputStream(filePath); ObjectInputStream ois = new ObjectInputStream(fin)) {
                 Object obj = ois.readObject();
-                if(obj instanceof ArrayList<?> )
-                    for(Object e : (ArrayList<?>)obj){
-                        if(e != null && e instanceof BMItem)
+                if(obj instanceof ArrayList<?> ) {
+                    for(Object e : (ArrayList<?>) obj){
+                        if(e != null && e instanceof BMItem) {
                             transactions.add((BMItem)e);
+                        }
                     }
-                    //transactions = (ArrayList<BMItem>) obj;
+                }
             }
             
             ((BMTableModel) table.getTable().getModel()).setTransactionList(transactions);

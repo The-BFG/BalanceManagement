@@ -30,26 +30,27 @@ public class BMTablePanel extends JPanel {
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
         
-        /*BMItem trans1 = new BMItem(new GregorianCalendar(), "Prova1", 100.0);
-        BMItem trans2 = new BMItem(new GregorianCalendar(), "Prova2", 20.5);
-        BMItem trans3 = new BMItem(new GregorianCalendar(2012, 12, 1), "Prova3", 100.31);
-        BMItem trans4 = new BMItem(new GregorianCalendar(2017, 1, 10), "Prova4", 20.3);
-        BMItem trans5 = new BMItem(new GregorianCalendar(2017, 2, 24), "Prova5", 20.1);*/
         tableModel = new BMTableModel();
         tableSorter = new TableRowSorter<BMTableModel>(tableModel);
-        /*tableModel.addItem(trans1);
-        tableModel.addItem(trans2);
-        tableModel.addItem(trans3); 
-        tableModel.addItem(trans4);
-        tableModel.addItem(trans5);*/
+        
         table = new JTable(tableModel);
-        table.setRowSorter(tableSorter);
+        table.getTableHeader().setReorderingAllowed(false);
+        
+        table.setRowSorter(tableSorter);  
+        tableSorter.setSortable(0, false); 
+        tableSorter.setSortable(1, false); 
+        tableSorter.setSortable(2, false); 
+        tableSorter.setSortable(3, false);
+        
         table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         
-        table.getColumnModel().getColumn(0).setPreferredWidth(200);
-        table.getColumnModel().getColumn(1).setPreferredWidth(500);//table.getColumnModel().getColumn(1).getPreferredWidth()+100
-        table.getColumnModel().getColumn(2).setPreferredWidth(150);
-        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table.getColumnModel().getColumn(0).setMinWidth(90);
+        table.getColumnModel().getColumn(0).setMaxWidth(90);        
+        //table.getColumnModel().getColumn(1).setPreferredWidth(500);//table.getColumnModel().getColumn(1).getPreferredWidth()+100
+        table.getColumnModel().getColumn(2).setMinWidth(160);
+        table.getColumnModel().getColumn(2).setMaxWidth(160);
+        table.getColumnModel().getColumn(3).setMinWidth(50);
+        table.getColumnModel().getColumn(3).setMaxWidth(50);
         
         scrollPane.getViewport().add(table);  
         
@@ -62,19 +63,7 @@ public class BMTablePanel extends JPanel {
         totalPanel.add(totalLbl);
         totalPanel.add(totalTxt);
         this.refreshTotal();
-        /*totalModel = new DefaultTableModel(1,2);
-        totalModel.setValueAt(" Totale", 0, 0);
-        totalModel.setValueAt(this.getTotal(), 0, 1);
-        
-        total = new JTable(totalModel) { 
-            @Override
-            public boolean isCellEditable(int row, int column) {                
-                return false; 
-            }
-        };  
-        total.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-        total.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-        total.setCellSelectionEnabled(false);*/        
+              
         tablePanelLayout = new BorderLayout();
         this.setLayout(tablePanelLayout);
         this.add(scrollPane, BorderLayout.CENTER);

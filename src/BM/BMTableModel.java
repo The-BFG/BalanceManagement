@@ -4,14 +4,13 @@ import java.io.Serializable;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 public class BMTableModel extends AbstractTableModel implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private ArrayList<BMItem> transactions = null;
     private final String[] colName = {"Date","Description","Amount","Edit"};
-    private List<boolean[]> editable;
+    private ArrayList<boolean[]> editable;
     
     BMTableModel() {
         transactions = new ArrayList<>();
@@ -21,7 +20,7 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
     BMTableModel(ArrayList<BMItem> transactions) {
         this.transactions = transactions;//new ArrayList<>(transactions);
         editable = new ArrayList<boolean[]>();
-        boolean[] element = {false, false, false};
+        boolean[] element = {false, false, false, false};
         
         for(int i=0;i<this.transactions.size();i++) {
             editable.add(element);
@@ -103,7 +102,7 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
     public void addItem(BMItem item) {
         transactions.add(item);
         fireTableDataChanged();
-        boolean[] element = {false, false, false};
+        boolean[] element = {false, false, false, false};
         editable.add(element);
     }
     
@@ -113,6 +112,11 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
     
     public void setTransactionList(ArrayList<BMItem> transactions) {
         this.transactions.addAll(transactions);
+        boolean[] element = {false, false, false, false};
+        
+        for(int i=0;i<this.transactions.size();i++) {
+            editable.add(element);
+        } 
         fireTableDataChanged();
     }
 }
