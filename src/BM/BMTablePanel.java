@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter; 
@@ -34,6 +35,7 @@ public class BMTablePanel extends JPanel {
         tableSorter = new TableRowSorter<BMTableModel>(tableModel);
         
         table = new JTable(tableModel);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
         
         table.setRowSorter(tableSorter);  
@@ -46,7 +48,6 @@ public class BMTablePanel extends JPanel {
         
         table.getColumnModel().getColumn(0).setMinWidth(90);
         table.getColumnModel().getColumn(0).setMaxWidth(90);        
-        //table.getColumnModel().getColumn(1).setPreferredWidth(500);//table.getColumnModel().getColumn(1).getPreferredWidth()+100
         table.getColumnModel().getColumn(2).setMinWidth(160);
         table.getColumnModel().getColumn(2).setMaxWidth(160);
         table.getColumnModel().getColumn(3).setMinWidth(50);

@@ -53,4 +53,5 @@ public class BMItem implements Serializable{
     public Double getAmount() {return amount;}
     
     public void setAmount(Double amount) {this.amount = amount;}
+
 }

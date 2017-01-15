@@ -1,5 +1,6 @@
 package BM;
 
+import Export.AbstractExport;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -119,6 +120,10 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         }
         catch (NullPointerException nullPointer) {
             tablePanel.setPeriodFilter(null);
+        }
+        for(int i=0; i<tablePanel.getTable().getModel().getRowCount(); i++) {
+            BMItem item = ((BMTableModel)tablePanel.getTable().getModel()).getTransactionsList().get(i);
+            System.out.println(i + " " + (BMItem.dateFormat.format(item.getDate().getTime()) + item.getDescription() + item.getAmount() + "\n"));
         }
         tablePanel.refreshTotal();
     }
