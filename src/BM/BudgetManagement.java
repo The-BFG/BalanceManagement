@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.*;
+import javax.swing.BoxLayout;
 
 public class BudgetManagement {
     public static final Color PANEL_COLOR = Color.pink;
@@ -16,15 +17,22 @@ public class BudgetManagement {
         
         BMTablePanel table = new BMTablePanel();
         BMPeriodPanel period = new BMPeriodPanel(table);
+        BMTableFinder searchBar = new BMTableFinder(table);
         BMAddTransactionPanel addTransaction = new BMAddTransactionPanel(table);
         
         menu = new BMMenuBar(table);
         mainFrame.setJMenuBar(menu);
         
+        JPanel topPanel = new JPanel();        
+        BoxLayout topLayout = new BoxLayout(topPanel, BoxLayout.X_AXIS);
+        topPanel.setLayout(topLayout);
+        topPanel.add(period);
+        topPanel.add(searchBar);
+        
         JPanel mainPanel = (JPanel) mainFrame.getContentPane();  
         BorderLayout mainLayout = new BorderLayout();
         mainPanel.setLayout(mainLayout);        
-        mainPanel.add(period, BorderLayout.NORTH);
+        mainPanel.add(topPanel, BorderLayout.NORTH);
         mainPanel.add(Box.createRigidArea(new Dimension(5,0)), BorderLayout.LINE_START);
         mainPanel.add(table, BorderLayout.CENTER);
         mainPanel.add(Box.createRigidArea(new Dimension(5,0)), BorderLayout.LINE_END);

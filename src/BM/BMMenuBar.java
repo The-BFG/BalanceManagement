@@ -128,7 +128,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 catch (PrinterException pe) {
                     System.out.println("Impossibile stampare.\n" + pe);
                 }
-                if (printVal) {
+                if (!printVal) {
                     Image image = new ImageIcon("./icon/successful.png","").getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
                     ImageIcon icon = new ImageIcon(image);
                     JOptionPane.showMessageDialog(null, "La stampa è avvenuta con successo", "Esito Stampa", JOptionPane.INFORMATION_MESSAGE, icon);
