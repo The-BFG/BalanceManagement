@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.Box;
@@ -14,7 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.jdesktop.swingx.JXDatePicker;
 
-public class BMAddTransactionPanel extends JPanel implements ActionListener {
+public class BMAddTransactionPanel extends JPanel implements ActionListener, KeyListener {
     private static final long serialVersionUID = 1L;
     private JLabel addLbl = new JLabel("  Inserisci i dettagli della nuova transazione da aggiungere al bilancio:");
     private BorderLayout panelLayout;
@@ -45,6 +48,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         
         descTxt = new BMTextField("Descrizione della transazione effettuata",50);
         amountTxt = new BMTextField("Ammontare",10);
+        amountTxt.addKeyListener(this);
         
         centerPanel = new JPanel();
         centerLayout = new BoxLayout(centerPanel, BoxLayout.X_AXIS);
@@ -56,6 +60,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
         
         addBtn = new JButton("Aggiungi transazione");
         addBtn.addActionListener(this);
+        addBtn.addKeyListener(this);
         
         panelLayout = new BorderLayout();
         setLayout(panelLayout);
@@ -68,6 +73,25 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        addTransaction();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            addTransaction();
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+    
+    private void addTransaction() {
         if( !descTxt.getText().equals("") && !amountTxt.getText().equals("") && !(insertXDP.getDate() == null)) {
             Double amount;
             try {
@@ -80,8 +104,8 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener {
                 BMItem item = new BMItem(calendar, descTxt.getText(), amount);
                 tableModel.addItem(item);
                 
-                descTxt.setText("Transaction description");
-                amountTxt.setText("Amount");
+                descTxt.setText("Descrizione della transazione effettuata");
+                amountTxt.setText("Ammontare");
                 
                 table.refreshTotal();
                 /*for(int i=0; i<tableModel.getRowCount();i++) {

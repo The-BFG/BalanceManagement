@@ -24,7 +24,7 @@ public class BMTextField extends JTextField implements FocusListener  {
     }
     public BMTextField (String text){
         super(text);
-         firstTxt = text;
+        firstTxt = text;
         addFocusListener(this);
     }
     public BMTextField (int nChar){
@@ -37,14 +37,17 @@ public class BMTextField extends JTextField implements FocusListener  {
         firstTxt = text;
         addFocusListener(this);
     }
+    
+    public String getDefaultText() {
+        return firstTxt;
+    }
 
     @Override
     public void focusGained(FocusEvent e) {
         setText(""); // Empty the text field when it receives focus
     }
     @Override
-    public void focusLost(FocusEvent e) {
-        
+    public void focusLost(FocusEvent e) {      
         if(getText().equals("")) {
             setText(firstTxt);
         }
