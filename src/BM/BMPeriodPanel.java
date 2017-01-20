@@ -89,6 +89,8 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         //System.out.println(e.getActionCommand());
+        tablePanel.getTable().clearSelection();
+        tablePanel.disableButton();
         GregorianCalendar date = new GregorianCalendar();
         String pattern = null;
         switch(e.getActionCommand()) {

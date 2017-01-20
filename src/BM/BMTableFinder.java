@@ -72,19 +72,21 @@ public class BMTableFinder extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        find();        
+        System.out.println("button" + counter);
+        find();  
+        System.out.println("button" + counter);
     }
 
     @Override
     public void keyTyped(KeyEvent e) {
-        if(e.getKeyCode() != KeyEvent.VK_ENTER)
-            counter = 0;
     }    
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if(e.getKeyCode() != KeyEvent.VK_ENTER)
+        if(e.getKeyCode() != KeyEvent.VK_ENTER) {
             counter = 0;
+            System.out.println("released" + e.getKeyChar());
+        }
     }
     
     @Override

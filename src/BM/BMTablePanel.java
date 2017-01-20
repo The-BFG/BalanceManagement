@@ -51,13 +51,13 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
+        table.getSelectionModel().addListSelectionListener(this);
         //table.addFocusListener(WHEN_FOCUSED);
         
         table.setRowSorter(tableSorter);  
         tableSorter.setSortable(0, false); 
         tableSorter.setSortable(1, false); 
-        tableSorter.setSortable(2, false); 
-        tableSorter.setSortable(3, false);
+        tableSorter.setSortable(2, false);
         
         table.getColumnModel().getColumn(2).setCellRenderer(rightRenderer);
         
@@ -65,8 +65,6 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         table.getColumnModel().getColumn(0).setMaxWidth(90);        
         table.getColumnModel().getColumn(2).setMinWidth(160);
         table.getColumnModel().getColumn(2).setMaxWidth(160);
-        table.getColumnModel().getColumn(3).setMinWidth(50);
-        table.getColumnModel().getColumn(3).setMaxWidth(50);
         
         scrollPane.getViewport().add(table);  
         
@@ -79,8 +77,10 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         totalPanel.add(totalTxt);
         
         editBtn = new JButton();
+        editBtn.setActionCommand("edit");
         editBtn = loadIcon(editBtn,"edit.png");
         deleteBtn = new JButton();
+        deleteBtn.setActionCommand("delete");
         deleteBtn = loadIcon(deleteBtn,"trash.png");
         JPanel editPanel = new JPanel();
         BoxLayout editLayout = new BoxLayout(editPanel, BoxLayout.X_AXIS);
@@ -121,8 +121,26 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+        switch(e.getActionCommand()) {
+            case "edit":
+                if(table.getSelectedRow() != -1) {
+                    boolean [] item = {true, true, true};
+                    tableModel.setEditable(item, table.getSelectedRow());
+                }
+                break;
+            case "delete":
+                if(table.getSelectedRow() != -1)
+                    tableModel.removeRow(table.getSelectedRow());
+                break;
+            default:
+        }
     }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        editBtn.setEnabled(true);
+        deleteBtn.setEnabled(true);
+    }   
     
     private JButton loadIcon(JButton btn, String imageName) {
         Image img = null;
@@ -142,9 +160,9 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         btn.setEnabled(false);
         return btn;
     }
-
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-      
+    
+    public void disableButton() {
+        editBtn.setEnabled(false);
+        deleteBtn.setEnabled(false);
     }
 }

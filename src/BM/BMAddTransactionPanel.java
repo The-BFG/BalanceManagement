@@ -106,6 +106,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener, Key
                 descTxt.setText("Descrizione della transazione effettuata");
                 amountTxt.setText("Ammontare");
                 
+                table.getTable().getSelectionModel().setSelectionInterval(tableModel.getRowCount()-1, tableModel.getRowCount()-1);
                 table.refreshTotal();
                 /*for(int i=0; i<tableModel.getRowCount();i++) {
                     for(int j=0; j<tableModel.getColumnCount();j++) {
