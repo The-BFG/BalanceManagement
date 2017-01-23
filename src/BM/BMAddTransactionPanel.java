@@ -59,7 +59,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener, Key
         
         addBtn = new JButton("Aggiungi transazione");
         addBtn.addActionListener(this);
-        addBtn.addKeyListener(this);
+        //addBtn.addKeyListener(this);
         
         panelLayout = new BorderLayout();
         setLayout(panelLayout);
@@ -82,6 +82,7 @@ public class BMAddTransactionPanel extends JPanel implements ActionListener, Key
     @Override
     public void keyPressed(KeyEvent e) {
         if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+            descTxt.requestFocus(); 
             addTransaction();
         }
     }
