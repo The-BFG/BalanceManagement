@@ -85,7 +85,7 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
             /**Amount field*/
             case 2:
                 try {
-                item.setAmount(Double.parseDouble(String.format("%1$.2f",Double.parseDouble(((String)field).replace(',', '.')))));
+                item.setAmount(Double.parseDouble(String.format("%1$.2f", Double.parseDouble((String)field)).replace(',', '.')));
                 }
                 catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(null, "Il valore della transazione inserito non è corretto.", "Errore ammontare", JOptionPane.WARNING_MESSAGE);
