@@ -70,6 +70,7 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
     @Override
     public void setValueAt(Object field, int row, int col) {
         BMItem item= transactions.get(row);
+        boolean[] element = {false, false, false};
         switch(col) {
             /**Date field*/
             case 0:
@@ -82,15 +83,24 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
                 else {
                     item.setDate(item.getDate());
                     JOptionPane.showMessageDialog(null, "La data che è stata inserita non è corretta.", "Errore data", JOptionPane.WARNING_MESSAGE);
+                    
                 }
+                this.setEditable(element, row);
                 break;
             /**Description field*/
             case 1:
                 item.setDescription((String)field);
+                this.setEditable(element, row);
                 break;
             /**Amount field*/
             case 2:
-                item.setAmount((Double)field);
+                try {
+                item.setAmount(Double.parseDouble(String.format("%1$.2f",Double.parseDouble((String)field))));
+                }
+                catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Il valore della transazione inserito non è corretto.", "Errore ammontare", JOptionPane.WARNING_MESSAGE);
+                }
+                this.setEditable(element, row);
                 break;
             /**Default*/
             default:      

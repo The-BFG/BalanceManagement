@@ -136,6 +136,7 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
                     tableModel.removeRow(table.getSelectedRow());
                 break;
             default:
+                System.out.println("sono nel default");
         }
     }
 
