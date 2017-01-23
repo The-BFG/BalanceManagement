@@ -38,6 +38,7 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
     private final JLabel totalLbl = new JLabel("Totale delle transazioni: ");
     private JTextField totalTxt;
     private JButton editBtn, deleteBtn;
+    private JLabel riga = new JLabel("");
     
     public BMTablePanel() {
         scrollPane = new JScrollPane();
@@ -85,6 +86,8 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         JPanel editPanel = new JPanel();
         BoxLayout editLayout = new BoxLayout(editPanel, BoxLayout.X_AXIS);
         editPanel.setLayout(editLayout);
+        editPanel.add(riga);
+        editPanel.add(Box.createRigidArea(new Dimension(10,0)));
         editPanel.add(editBtn);
         editPanel.add(Box.createRigidArea(new Dimension(5,0)));
         editPanel.add(deleteBtn);
@@ -93,7 +96,7 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         bottomLayout = new BoxLayout(bottomPanel,BoxLayout.X_AXIS);
         bottomPanel.setLayout(bottomLayout);
         bottomPanel.add(totalPanel);
-        bottomPanel.add(Box.createHorizontalGlue());//Box.createRigidArea(new Dimension(300,0)));
+        bottomPanel.add(Box.createHorizontalGlue());
         bottomPanel.add(editPanel);
         this.refreshTotal();
               
@@ -138,6 +141,7 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        riga.setText("Riga selezionata: " + (table.getSelectedRow()+1));
         editBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
     }   

@@ -1,9 +1,12 @@
 package BM;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.ParseException;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
 
 public class BMTableModel extends AbstractTableModel implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -70,7 +73,16 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
         switch(col) {
             /**Date field*/
             case 0:
-                item.setDate((GregorianCalendar)field);
+                String possibleDate = (String) field;
+                if(isDateValid(possibleDate)) {
+                    GregorianCalendar date = new GregorianCalendar();
+                    date.set( Integer.parseInt(possibleDate.substring(6, 10)), (Integer.parseInt(possibleDate.substring(3, 5)) - 1), Integer.parseInt(possibleDate.substring(0, 2)));
+                    item.setDate(date);
+                }
+                else {
+                    item.setDate(item.getDate());
+                    JOptionPane.showMessageDialog(null, "La data che è stata inserita non è corretta.", "Errore data", JOptionPane.WARNING_MESSAGE);
+                }
                 break;
             /**Description field*/
             case 1:
@@ -118,5 +130,17 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
             editable.add(element);
         } 
         fireTableDataChanged();
+    }
+    
+    public static boolean isDateValid(String date) {
+        try {
+            DateFormat df = BMItem.dateFormat;
+            df.setLenient(false);
+            df.parse(date);
+            return true;
+        }
+        catch (ParseException e) {
+            return false;
+        }
     }
 }

@@ -46,7 +46,7 @@ public class BMTableFinder extends JPanel implements ActionListener, KeyListener
         try {
             this.img = ( ImageIO
                     .read(new FileInputStream(((System.getProperty("user.dir").endsWith("class")) ? "../icon/next.png" : "./icon/next.png"))))
-                    .getScaledInstance(25, 25, Image.SCALE_DEFAULT);
+                    .getScaledInstance(26, 26, Image.SCALE_DEFAULT);
         } catch (IOException ex) {
             System.out.println("Impossibile caricare l'icona del searchBtn\n" + ex);
         }
@@ -107,5 +107,6 @@ public class BMTableFinder extends JPanel implements ActionListener, KeyListener
                 counter++;
         }
         counter = 0;
+        
     }    
 }
