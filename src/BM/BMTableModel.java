@@ -12,22 +12,15 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private ArrayList<BMItem> transactions = null;
-    private final String[] colName = {"Date","Description","Amount"};
+    private final String[] colName = {"Data","Descrizione","Ammontare"};
     private ArrayList<boolean[]> editable;
     
-    BMTableModel() {
+    private BMTablePanel table;
+    
+    BMTableModel(BMTablePanel table) {
+        this.table = table;
         transactions = new ArrayList<>();
         editable = new ArrayList<boolean[]>();
-    }
-    
-    BMTableModel(ArrayList<BMItem> transactions) {
-        this.transactions = transactions;//new ArrayList<>(transactions);
-        editable = new ArrayList<boolean[]>();
-        boolean[] element = {false, false, false};
-        
-        for(int i=0;i<this.transactions.size();i++) {
-            editable.add(element);
-        }        
     }
 
     /**Get method for the number of column
@@ -83,29 +76,26 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
                 else {
                     item.setDate(item.getDate());
                     JOptionPane.showMessageDialog(null, "La data che è stata inserita non è corretta.", "Errore data", JOptionPane.WARNING_MESSAGE);
-                    
                 }
-                this.setEditable(element, row);
                 break;
             /**Description field*/
             case 1:
                 item.setDescription((String)field);
-                this.setEditable(element, row);
                 break;
             /**Amount field*/
             case 2:
                 try {
-                item.setAmount(Double.parseDouble(String.format("%1$.2f",Double.parseDouble((String)field))));
+                item.setAmount(Double.parseDouble(String.format("%1$.2f",Double.parseDouble(((String)field).replace(',', '.')))));
                 }
                 catch (NumberFormatException nfe) {
                     JOptionPane.showMessageDialog(null, "Il valore della transazione inserito non è corretto.", "Errore ammontare", JOptionPane.WARNING_MESSAGE);
                 }
-                this.setEditable(element, row);
                 break;
             /**Default*/
             default:      
                 break;
         }
+        this.setEditable(element, row);
         fireTableDataChanged();
     } 
     

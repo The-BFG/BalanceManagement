@@ -46,14 +46,13 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
         rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
         
-        tableModel = new BMTableModel();
+        tableModel = new BMTableModel(this);
         tableSorter = new TableRowSorter<BMTableModel>(tableModel);
         
         table = new JTable(tableModel);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         table.getTableHeader().setReorderingAllowed(false);
         table.getSelectionModel().addListSelectionListener(this);
-        //table.addFocusListener(WHEN_FOCUSED);
         
         table.setRowSorter(tableSorter);  
         tableSorter.setSortable(0, false); 
@@ -132,16 +131,20 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
                 }
                 break;
             case "delete":
-                if(table.getSelectedRow() != -1)
+                if(table.getSelectedRow() != -1) {
                     tableModel.removeRow(table.getSelectedRow());
+                }
                 break;
             default:
-                System.out.println("sono nel default");
         }
+        this.disableButton();
+        this.refreshTotal();
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
+        if(table.getSelectedRow() == -1)
+            return;
         riga.setText("Riga selezionata: " + (table.getSelectedRow()+1));
         editBtn.setEnabled(true);
         deleteBtn.setEnabled(true);
@@ -159,7 +162,6 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         }
         btn.setIcon(new ImageIcon(img));
         btn.setBackground(null);
-        //btn.setBorder(null);
         btn.setContentAreaFilled(true);
         btn.addActionListener(this);
         btn.setEnabled(false);
