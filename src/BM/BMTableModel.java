@@ -96,6 +96,7 @@ public class BMTableModel extends AbstractTableModel implements Serializable{
                 break;
         }
         this.setEditable(element, row);
+        table.refreshTotal();
         fireTableDataChanged();
     } 
     
