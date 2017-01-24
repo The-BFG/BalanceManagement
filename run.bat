@@ -1,3 +1,3 @@
 cd class
-java -cp "lib*;." BM.BudgetManagement
+java -cp ../lib/*;. BM.BudgetManagement
 cd ..
