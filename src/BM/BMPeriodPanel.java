@@ -145,7 +145,7 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         }
         for(int i=0; i<tablePanel.getTable().getModel().getRowCount(); i++) {
             BMItem item = ((BMTableModel)tablePanel.getTable().getModel()).getTransactionsList().get(i);
-            System.out.println(i + " " + (BMItem.dateFormat.format(item.getDate().getTime()) + item.getDescription() + item.getAmount() + "\n"));
+            //System.out.println(i + " " + (BMItem.dateFormat.format(item.getDate().getTime()) + item.getDescription() + item.getAmount() + "\n"));
         }
         tablePanel.refreshTotal();
     }

@@ -105,7 +105,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getActionCommand());
+        //System.out.println(e.getActionCommand());
         switch(e.getActionCommand()) {
             case "Nuovo archivio":
                 int confirmVal = JOptionPane.showConfirmDialog(null, "Vuoi salvare l'archivio aperto prima di aprire un archivio vuoto?", "Conferma apertura nuovo archivio.", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
