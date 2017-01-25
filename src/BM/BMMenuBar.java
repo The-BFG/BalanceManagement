@@ -167,7 +167,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             case "Esporta in formato OpenDocument":
                 if(((BMTableModel)table.getTable().getModel()).getTransactionsList().size() > 0) {
                     String date = BMItem.completeDate.format(Calendar.getInstance().getTime());
-                    final File file = new File(((System.getProperty("user.dir").endsWith("class")) ? "../archive/ods/Archivio" : "./archive/ods/Archivio")+date);
+                    final File file = new File(((System.getProperty("user.dir").endsWith("class")) ? "../archive/ods/Archivio" : "./archive/ods/Archivio")+date.substring(17, 19));
                     try {
                         SpreadSheet.createEmpty((BMTableModel)table.getTable().getModel()).saveAs(file);
                         OOUtils.open(new File(file.getAbsolutePath() +".ods"));               
