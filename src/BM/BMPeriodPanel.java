@@ -33,7 +33,6 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private BMTablePanel tablePanel;
     
     public BMPeriodPanel(BMTablePanel tablePanel) {
-        //toModel.setYear((new GregorianCalendar().get(Calendar.YEAR)));
         this.tablePanel = tablePanel;
         
         day = new JRadioButton("Giorno");
