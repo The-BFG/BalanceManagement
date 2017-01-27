@@ -74,12 +74,7 @@ public abstract class AbstractExport {
             }
         }
         else {
-            JOptionPane.showMessageDialog(null, "Esportazione annullata perche non è presente alcuna transazione.", "Esportazione annullata", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Esportazione annullata perche non e' presente alcuna transazione.", "Esportazione annullata", JOptionPane.WARNING_MESSAGE);
         }
     }
-    /*public static boolean haveExtension(String fileName) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z_]*[.-.]{1}[a-zA-Z]{1,5}+$");
-        Matcher match = pattern.matcher(fileName);
-        return match.find();
-    }*/
 }

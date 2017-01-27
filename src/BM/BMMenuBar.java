@@ -35,7 +35,11 @@ import org.jopendocument.dom.OOUtils;
 import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
 /**
- *
+ *Classe che serve a gestire tutti gli eventi collegati alla barra dei menu in alto.
+ * 
+ * <br> Estende una <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JMenuBar.html">JMenuBar</a>.
+ * <br>Sono implementati tutti i metodi di gestione di salvataggio apertura e stampa del bilancio.<br>
+ * E' inoltre possibile esportare il bilancio in formato csv,tsv e ods.
  * @author giacomo
  */
 public class BMMenuBar  extends JMenuBar implements ActionListener{
@@ -54,6 +58,12 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
     
     private BMTablePanel table;    
     
+    /**
+     * Costruttore della classe  <a href="../BM/BMMenuBar">BMMenuBar</a>.
+     * 
+     * <br>Implementa tutta l'interfaccia grafica della barra dei menu.
+     * @param table riferimento al <a href="../BM/BMTablePanel">BMTablePanel</a> 
+     */
     public BMMenuBar(BMTablePanel table) {
         this.table = table;
         
@@ -86,6 +96,13 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         this.add(exportMenu);
     }
 
+    /**
+     * Metodo che cattura la voce di menu che è stata cliccata.
+     * 
+     * <br>Questo metodo fara partire una sequenza di operazione in base alla voce del menu che è stata 
+     * selezionata.
+     * @param e serve a visualizzare chi è che ha invocato l'evento.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         System.out.println(e.getActionCommand());
@@ -131,10 +148,10 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                 if (printVal) {
                     Image image = new ImageIcon("./icon/successful.png","").getImage().getScaledInstance(32, 32, Image.SCALE_DEFAULT);
                     ImageIcon icon = new ImageIcon(image);
-                    JOptionPane.showMessageDialog(null, "La stampa è avvenuta con successo", "Esito Stampa", JOptionPane.INFORMATION_MESSAGE, icon);
+                    JOptionPane.showMessageDialog(null, "La stampa e' avvenuta con successo", "Esito Stampa", JOptionPane.INFORMATION_MESSAGE, icon);
                 }
                 else
-                    JOptionPane.showMessageDialog(null, "La stampa non è avvenuta con successo", "Esito Stampa", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La stampa non e' avvenuta con successo", "Esito Stampa", JOptionPane.WARNING_MESSAGE);
                 break;
             case "Esci":
                 System.exit(0);
@@ -150,7 +167,7 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
             case "Esporta in formato OpenDocument":
                 if(((BMTableModel)table.getTable().getModel()).getTransactionsList().size() > 0) {
                     String date = BMItem.completeDate.format(Calendar.getInstance().getTime());
-                    final File file = new File(((System.getProperty("user.dir").endsWith("class")) ? "../archive/ods/Archivio(" : "./archive/ods/Archivio(")+date+")");
+                    final File file = new File(((System.getProperty("user.dir").endsWith("class")) ? "../archive/ods/Archivio(" : "./archive/ods/Archivio")+date);
                     try {
                         SpreadSheet.createEmpty((BMTableModel)table.getTable().getModel()).saveAs(file);
                         OOUtils.open(new File(file.getAbsolutePath() +".ods"));               
@@ -163,12 +180,22 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
                     } 
                 }
                 else {
-                    JOptionPane.showMessageDialog(null, "Esportazione annullata perche non è presente alcuna transazione.", "Esportazione annullata", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Esportazione annullata perche non e' presente alcuna transazione.", "Esportazione annullata", JOptionPane.WARNING_MESSAGE);
                 }
                 break;
             default:
         }
     }
+    
+    /**
+     * Metodo che gestisce tutto  il caricamento di un bilancio da un archivio salvato in precedenza.
+     * 
+     * <br> La gestione di tutte le eccezioni che possono essere sollevato utilizzando questo metodo devono essere gestite dal
+     * chiamante4 di questo metodo.
+     * @throws ClassNotFoundException Classe non trovata.
+     * @throws FileNotFoundException File non trovato.
+     * @throws IOException Errore di Input/Output.
+     */
     private void openArchive() throws ClassNotFoundException, FileNotFoundException, IOException {   
         JFileChooser open = new JFileChooser((System.getProperty("user.dir").endsWith("class")) ? "../archive/bin" : "./archive/bin");             
         open.setMultiSelectionEnabled(false);
@@ -196,6 +223,12 @@ public class BMMenuBar  extends JMenuBar implements ActionListener{
         }
     }
     
+    /**
+     * Metodo per effettuare un corretto salvataggio del bilancio su un file binario.
+     * 
+     * <br>In particolare viene salvato l'intero ArrayList di transazioni che sono presenti all'interno
+     * del <a href="../BM/BMTableModel">BMTableModel</a>.
+     */
     private void saveArchive(){
         String date="";
         String filePath; 

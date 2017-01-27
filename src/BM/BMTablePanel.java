@@ -25,6 +25,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter; 
 
+/**
+ * Pannello principale che ha il compito di mostrare tutto cio che contiene l'archivio.
+ * 
+ * <br>Il JPanel piu esterno è separato in due sezioni una contiene un JScrollPanel dove all'interno c'e una <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JTable.html">JTable</a>
+ * e il rispettivo modello: <a href="../BM/BMTableModel">BMTableModel</a>.<br>
+ * La seconda sezione del pannello è composta da una JTextField contenente il totale di tutte le transasazioni visualizzate 
+ * nella <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JTable.html">JTable</a> e al lato opposto troviamo i bottoni per la modifica e per l'eliminazione di una riga della <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JTable.html">JTable</a>.<br>
+ * @see javax.swing.JPanel, java.awt.event.ActionListener, java.awt.event.ListSelectionListener
+ * @author giacomo
+ */
 public class BMTablePanel extends JPanel implements ActionListener, ListSelectionListener{
     private static final long serialVersionUID = 1L;
     private JScrollPane scrollPane;
@@ -40,6 +50,13 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
     private JButton editBtn, deleteBtn;
     private JLabel riga = new JLabel("");
     
+    /**
+     * Costruttore della classe <a href="../BM/BMTablePanel">BMTabelPanel</a> che inizializza tutti gli oggetti.
+     * 
+     * <br>La tabella che viene creata inizialmente è vuota e vengono disabilitati gli ordinamenti automatici 
+     * delle intestazioni delle colonne, come anche i bottoni di cancellazine e modifica che sono disabilitati
+     * fino a quando non viene insierita e selezionata una riga.
+     */
     public BMTablePanel() {
         scrollPane = new JScrollPane();
         
@@ -105,22 +122,51 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         this.add(bottomPanel, BorderLayout.SOUTH);       
     }
     
+    /**
+     * Metodo get() per ottenere la tabella di questo pannello.
+     * 
+     * @return table intera tabella gestita da questo pannello.
+     */
     public JTable getTable() {
         return table;
     }
+    
+    /**
+     * Metodo per settare il filtro del <a href="../BM/BMTableModel">BMTableModel</a> in base alla data.
+     * 
+     * @param rf Filtro per visualizzare solo alcuni elementi all'interno della <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JTable.html">JTable</a>.
+     * @see javax.swing.RowFilter.
+     */
     public void setPeriodFilter(RowFilter<BMTableModel,Object> rf) {
         tableSorter.setRowFilter(rf);
     }
+    
+    /**
+     * Metodo per leggere il valore totale di tutte le transazioni che sono mostrate nel <a href="../BM/BMTablePanel">BMTablePanel</a>
+     * 
+     * @return somma valore con precisione Double
+     */
     private Double getTotal() {
         Double totalTransaction = new Double(0);
         for(int i=0; i<table.getRowCount(); i++)
             totalTransaction += Double.parseDouble((table.getValueAt(i, 2)).toString());
         return totalTransaction;
     }  
+    
+    /**
+     * Aggiornamento del valore contenuto nella JTextField contenente il totale delle transazioni visualizzate.
+     */
     public final void refreshTotal() {
         totalTxt.setText(String.format("%.2f", getTotal()));
     }
-
+    
+    /**
+     * Metodo per la gestione delle azioni che vengono abilitate attraverso il click dei bottoni di modifica e cancellazione.
+     * 
+     * <br>Il bottone di modifica abilita la cella al doppio click e alla modifica mentre
+     * quello di cancellazione elimina la riga selezionata.
+     * @param e ActionEvent per catturare l'evento del click dei bottoni di modifica e cancellazione.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         switch(e.getActionCommand()) {
@@ -141,6 +187,11 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         this.refreshTotal();
     }
 
+    /**
+     * Metodo che cattura l'evento di selezione di una riga nella <a href="https://docs.oracle.com/javase/7/docs/api/javax/swing/JTable.html">JTable</a> e abilita i bottoni di modifica e cancellazione.
+     * @param e evento per gestire la selezione di una riga.
+     * @see java.awt.event.ListSelectionListener.
+     */
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if(table.getSelectedRow() == -1)
@@ -150,6 +201,15 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         deleteBtn.setEnabled(true);
     }   
     
+    /**
+     * Metodo che gestisce il caricamento dell'icona all'interno del bottone passato in input.
+     * 
+     * <br>Vengono inoltre cambiati alcuni attributi per migliorare la visualizzazione.
+     * 
+     * @param btn riferimento al bottone standard creato precedentemente.
+     * @param imageName nome dell'immagine che deve essere caricata all'interno del bottone come icona.
+     * @return JButton con attributi standard modificati.
+     */
     private JButton loadIcon(JButton btn, String imageName) {
         Image img = null;
         try {
@@ -168,6 +228,12 @@ public class BMTablePanel extends JPanel implements ActionListener, ListSelectio
         return btn;
     }
     
+    /**
+     * Disabilita i bottoni del <a href="../BM/BMTablePanel">BMTablePanel</a>.
+     * 
+     * <br>Viene utilizzata per dissabilitare i bottoni di modifica e cancellazione quando nessuna riga è
+     * selezionata all'interno del <a href="#table">table</a>.
+     */
     public void disableButton() {
         editBtn.setEnabled(false);
         deleteBtn.setEnabled(false);
