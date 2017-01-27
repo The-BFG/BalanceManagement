@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JFormattedTextField.AbstractFormatter;
 
+/**
+ * Classe che serve per 
+ * @author giacomo
+ */
 public class BMDateFormatter extends AbstractFormatter {
 
     private final String datePattern = "dd-MM-yyyy";

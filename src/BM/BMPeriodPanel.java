@@ -17,6 +17,13 @@ import javax.swing.JRadioButton;
 import javax.swing.RowFilter;
 import org.jdesktop.swingx.JXDatePicker;
 
+
+/**
+ * Classe che permette di cambiare il periodo di visualizzazione del bilancio.
+ * 
+ * <br>In questa classe viene creata l'nterfaccia e i metodi per la corretta gestione di visualizzazione
+ * di periodi predefini di transazioni ma anche di periodi arbitrari.
+ */
 public class BMPeriodPanel extends JPanel implements ActionListener {
     private static final long serialVersionUID = 1L;
     private final JLabel periodLbl = new JLabel("Mostra le transazioni del:");
@@ -31,6 +38,13 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
     private JPanel topPanel,midiPanel;
     private BMTablePanel tablePanel;
     
+    /**
+     * Costruttore della classe <a href="../BM/BMPeriodPanel">BMPeriodPanel</a>.
+     * 
+     * Questo costruttore si occupa di gestire l'inizializzazione di tutte le componenti grafiche e non 
+     * di questo pannello.
+     * @param tablePanel riferimento al <a href="../BM/BMTablePanel">BMTablePanel</a>
+     */
     public BMPeriodPanel(BMTablePanel tablePanel) {
         this.tablePanel = tablePanel;
         
@@ -84,6 +98,14 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         add(Box.createRigidArea(new Dimension(0,7)));
     }    
 
+    /**
+     * Metodo che gestisce la creazione e il settaggio di un RowFilter all'interno del <a href="../BM/BMTableModel">BMTableModel</a>
+     * 
+     * <br>In questa parte viene creato un pattern a seconda del JRadioButton che abbiamo selezionato che è prestabilito.
+     * <br>E' anche presente la creazione di un pattern per visualizzare in tabella un periodo arbitrario attraverso
+     * i due menu a tendina che permetto di selezionare un range arbitrario.
+     * @param e permette di capire che ha fatto partire l'evento.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         //System.out.println(e.getActionCommand());
@@ -128,6 +150,15 @@ public class BMPeriodPanel extends JPanel implements ActionListener {
         tablePanel.refreshTotal();
     }
     
+    /**
+     * Funzione brutale ma funzionale per la creazione di un pattern di un periodo arbitrario.
+     * 
+     * Questa funzione genera una regex composta di tutte le date che fanno parte del range e verifica
+     * in modo tale da far sapere al <a href="../BM/BMTableModel">BMTableModel</a> quali transazioni deve mostrare.
+     * @param fromXDP Periodo di partenza di cui si vogliono visualizzare le transazioni
+     * @param toXDP Periodo finale di cui si vogliono visualizzare le transazioni
+     * @return Stringa contenete una REGEX solitamente lunga che verra usata come RowFilter.
+     */
     private String createPattern(JXDatePicker fromXDP, JXDatePicker toXDP) {
         String fromDate = BMItem.dateFormat.format(fromXDP.getDate());
         String toDate = BMItem.dateFormat.format(toXDP.getDate());
